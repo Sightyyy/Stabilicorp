@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    public Image transitionImage;
+    public Image transitionImage;  // Ensure this is assigned in the editor
     public float transitionTime = 1.0f;
 
     AudioCollection audioCollection;
@@ -14,10 +14,11 @@ public class MainMenu : MonoBehaviour
     {
         audioCollection = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioCollection>();
     }
+
     private void Start()
     {
-        // Pastikan image dimulai dengan tidak terlihat
-        transitionImage.color = new Color(transitionImage.color.r, transitionImage.color.g, transitionImage.color.b, 0);
+        // Start with the transition image hidden
+        StartCoroutine(TransitionOpening());        
         audioCollection.PlayBGM(audioCollection.mainMenu);
     }
 
@@ -43,6 +44,11 @@ public class MainMenu : MonoBehaviour
         yield return StartCoroutine(FadeFromBlack());
     }
 
+    private IEnumerator TransitionOpening()
+    {
+        yield return StartCoroutine(FadeFromBlack());
+    }
+
     private IEnumerator TransitionAndQuit()
     {
         // Fade to black
@@ -54,13 +60,18 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator FadeToBlack()
     {
+        // Activate the transition image before fading
+        transitionImage.gameObject.SetActive(true);  
+        
         for (float t = 0.0f; t < transitionTime; t += Time.deltaTime)
         {
             float alpha = Mathf.Lerp(0, 1, t / transitionTime);
-            transitionImage.color = new Color(transitionImage.color.r, transitionImage.color.g, transitionImage.color.b, alpha);
+            SetImageAlpha(alpha);
             yield return null;
         }
-        transitionImage.color = new Color(transitionImage.color.r, transitionImage.color.g, transitionImage.color.b, 1);
+        
+        // Ensure the alpha is set to 1 (fully black)
+        SetImageAlpha(1);
     }
 
     private IEnumerator FadeFromBlack()
@@ -68,9 +79,29 @@ public class MainMenu : MonoBehaviour
         for (float t = 0.0f; t < transitionTime; t += Time.deltaTime)
         {
             float alpha = Mathf.Lerp(1, 0, t / transitionTime);
-            transitionImage.color = new Color(transitionImage.color.r, transitionImage.color.g, transitionImage.color.b, alpha);
+            SetImageAlpha(alpha);
             yield return null;
         }
-        transitionImage.color = new Color(transitionImage.color.r, transitionImage.color.g, transitionImage.color.b, 0);
+        
+        // Ensure the alpha is set to 0 (fully transparent)
+        SetImageAlpha(0);
+        
+        // Deactivate the transition image after fading
+        transitionImage.gameObject.SetActive(false);  
+    }
+
+    // Helper method to set the alpha (transparency) of the image
+    private void SetImageAlpha(float alpha)
+    {
+        if (transitionImage != null)
+        {
+            Color color = transitionImage.color;
+            color.a = alpha;
+            transitionImage.color = color;
+        }
+        else
+        {
+            Debug.LogError("Transition Image is not assigned!");
+        }
     }
 }
