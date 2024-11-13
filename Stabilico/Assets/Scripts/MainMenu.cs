@@ -18,6 +18,7 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         // Start with the transition image hidden
+        transitionImage.gameObject.SetActive(true);
         StartCoroutine(TransitionOpening());        
         audioCollection.PlayBGM(audioCollection.mainMenu);
     }
