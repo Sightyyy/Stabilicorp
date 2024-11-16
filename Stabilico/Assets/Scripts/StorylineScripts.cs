@@ -8,12 +8,28 @@ public class StorylineScript : MonoBehaviour
 
     public GameObject yesButton;
     public GameObject noButton;
+    [SerializeField] private TMPro.TMP_InputField ceoNameInput;
+    [SerializeField] private TMPro.TMP_InputField companyNameInput;
     private int yesClick = 0;
     private int noClick = 0;
+    private bool isCeoNameAccepted = false;
+    private bool isCompanyNameAccepted = false;
 
     void Start()
     {
         StartCoroutine(StartStoryline());
+    }
+
+    private void Update()
+    {
+        if (ceoNameInput.gameObject.activeSelf && ceoNameInput.interactable)
+        {
+            CheckCEONameInput();
+        }
+        else if (companyNameInput.gameObject.activeSelf && companyNameInput.interactable)
+        {
+            CheckCompanyNameInput();
+        }
     }
 
     void Jeda(float duration)
@@ -51,6 +67,53 @@ public class StorylineScript : MonoBehaviour
         if(No1 != null)
         {
             No1.interactable = interact;
+        }
+    }
+
+    private void CheckCEONameInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            string ceoName = ceoNameInput.text.Trim();
+
+            if (ceoName.Length >= 4 && ceoName.Length <= 20)
+            {
+                GameData.Instance.ceoName = ceoName;
+                isCeoNameAccepted = true;
+                Debug.Log($"CEO Name stored: {ceoName}");
+
+                ceoNameInput.text = "";
+                ceoNameInput.interactable = false;
+                ceoNameInput.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.Log($"Invalid CEO Name. Must be 4-20 characters. You entered: {ceoName.Length} characters.");
+            }
+        }
+    }
+
+
+    private void CheckCompanyNameInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            string companyName = companyNameInput.text.Trim();
+
+            if (companyName.Length >= 4 && companyName.Length <= 20)
+            {
+                GameData.Instance.companyName = companyName;
+                isCompanyNameAccepted = true;
+                Debug.Log($"CEO Name stored: {companyName}");
+
+                companyNameInput.text = "";
+                companyNameInput.interactable = false;
+                companyNameInput.gameObject.SetActive(false);
+            }
+            else
+            {
+                Debug.Log($"Invalid CEO Name. Must be 4-20 characters. You entered: {companyName.Length} characters.");
+            }
         }
     }
 
@@ -94,15 +157,17 @@ public class StorylineScript : MonoBehaviour
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
             Jeda(2);
             yield return new WaitForSeconds(2);
-            Ketik("Please insert your name", 20);
+            Ketik("Please insert your name (4-20 Characters)", 20);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
-            Jeda(3);
-            yield return new WaitForSeconds(3);
-            Ketik("Please insert your company name", 20);
+            ceoNameInput.gameObject.SetActive(true);
+            ceoNameInput.interactable = true;
+            yield return new WaitUntil(() => isCeoNameAccepted);
+            Ketik("Please insert your company name (4-20 Characters)", 20);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
-            Jeda(2);
-            yield return new WaitForSeconds(2);
-            Ketik("Okay, thats all i needed to know.", 20);
+            companyNameInput.gameObject.SetActive(true);
+            companyNameInput.interactable = true;
+            yield return new WaitUntil(() => isCompanyNameAccepted);
+            Ketik("Okay, that's all I needed to know.", 20);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
             Jeda(3);
             yield return new WaitForSeconds(3);
