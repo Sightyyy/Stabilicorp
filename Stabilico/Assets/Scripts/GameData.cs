@@ -3,27 +3,32 @@ using UnityEngine;
 public class GameData : MonoBehaviour
 {
     // Singleton instance
-    public static GameData Instance;
+    public static GameData instance;
 
     // Game data variables
     public string ceoName;
     public string companyName;
     public int inGameDate;
-    public int playerReputation;
     public int playerFinance;
-    public int playerMentalHealth;
+    public int workerAmount;
+    public int workerHappiness;
+    public int clientTrust;
 
     private void Awake()
     {
+        playerFinance = 50;
+        workerAmount = 20;
+        workerHappiness = 50;
+        clientTrust = 50;
         // If there's already an instance, destroy this one to prevent duplicates
-        if (Instance != null && Instance != this)
+        if (instance != null && instance != this)
         {
             Destroy(gameObject);
         }
         else
         {
             // Set this as the Singleton instance and make it persist across scenes
-            Instance = this;
+            instance = this;
             DontDestroyOnLoad(gameObject);
         }
     }
@@ -34,8 +39,9 @@ public class GameData : MonoBehaviour
         ceoName = "";
         companyName = "";
         inGameDate = 0;
-        playerReputation = 0;
         playerFinance = 0;
-        playerMentalHealth = 0;
+        workerAmount = 0;
+        workerHappiness = 0;
+        clientTrust = 0;
     }
 }

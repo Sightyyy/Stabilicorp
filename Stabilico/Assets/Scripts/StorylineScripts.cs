@@ -78,7 +78,7 @@ public class StorylineScript : MonoBehaviour
 
             if (ceoName.Length >= 4 && ceoName.Length <= 20)
             {
-                GameData.Instance.ceoName = ceoName;
+                GameData.instance.ceoName = ceoName;
                 isCeoNameAccepted = true;
                 Debug.Log($"CEO Name stored: {ceoName}");
 
@@ -102,7 +102,7 @@ public class StorylineScript : MonoBehaviour
 
             if (companyName.Length >= 4 && companyName.Length <= 20)
             {
-                GameData.Instance.companyName = companyName;
+                GameData.instance.companyName = companyName;
                 isCompanyNameAccepted = true;
                 Debug.Log($"CEO Name stored: {companyName}");
 
