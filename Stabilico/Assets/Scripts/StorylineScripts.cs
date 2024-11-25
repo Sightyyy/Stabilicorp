@@ -14,6 +14,7 @@ public class StorylineScript : MonoBehaviour
     private int noClick = 0;
     private bool isCeoNameAccepted = false;
     private bool isCompanyNameAccepted = false;
+    private MainMenu mainMenu;
 
     void Start()
     {
@@ -42,6 +43,10 @@ public class StorylineScript : MonoBehaviour
        typingEffect.TypeText(text, time);
     }
 
+    public void Awake()
+    {
+        mainMenu = GameObject.FindObjectOfType<MainMenu>();
+    }
     public void selectYes()
     {
         yesClick = 1;
@@ -119,19 +124,19 @@ public class StorylineScript : MonoBehaviour
 
     private IEnumerator StartStoryline()
     {
-        Ketik("So, you finally succeed on getting a diploma...", 20);
+        Ketik("So, you finally succeed on getting a diploma...", 60);
         yield return new WaitUntil(() => typingEffect.IsTypingFinished());
 
         Jeda(3);
         yield return new WaitForSeconds(3);
 
-        Ketik("And now you want to make your own company, huh?", 20);
+        Ketik("And now you want to make your own company, huh?", 60);
         yield return new WaitUntil(() => typingEffect.IsTypingFinished());
 
         Jeda(3);
         yield return new WaitForSeconds(3);
 
-        Ketik("Are you ready to face all of the pressure after you create your own company", 22);
+        Ketik("Are you ready to face all of the pressure after you create your own company", 60);
         yield return new WaitUntil(() => typingEffect.IsTypingFinished());
         Jeda(1);
         yield return new WaitForSeconds(1);
@@ -146,40 +151,39 @@ public class StorylineScript : MonoBehaviour
         // Jika yesClick == 1, jalankan logika Yes
         if (yesClick == 1)
         {
-            Ketik("", 1);
-            yield return new WaitUntil(() => typingEffect.IsTypingFinished());
             noButton.SetActive(false);
             yesButtonInteractable(false);
             Jeda(2);
             yield return new WaitForSeconds(2);
             yesButton.SetActive(false);
-            Ketik("Okay then.", 20);
+            Ketik("Okay then.", 60);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
-            Jeda(2);
+            Jeda(3);
             yield return new WaitForSeconds(2);
-            Ketik("Please insert your name (4-20 Characters)", 20);
+            Ketik("Please insert your name (4-20 Characters)", 60);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
             ceoNameInput.gameObject.SetActive(true);
             ceoNameInput.interactable = true;
             yield return new WaitUntil(() => isCeoNameAccepted);
-            Ketik("Please insert your company name (4-20 Characters)", 20);
+            Ketik("Please insert your company name (4-20 Characters)", 60);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
             companyNameInput.gameObject.SetActive(true);
             companyNameInput.interactable = true;
             yield return new WaitUntil(() => isCompanyNameAccepted);
-            Ketik("Okay, that's all I needed to know.", 20);
+            Ketik("Okay, that's all I needed to know.", 60);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
             Jeda(3);
             yield return new WaitForSeconds(3);
-            Ketik("Good luck", 20);
+            Ketik("Good luck", 60);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
+            Jeda(3);
+            mainMenu.PlayGame("Game Content 2");
+
 
         }
         // Jika noClick == 1, jalankan logika No
         else if(noClick == 1)
         {
-            Ketik("", 1);
-            yield return new WaitUntil(() => typingEffect.IsTypingFinished());
             yesButton.SetActive(false);
             noButtonInteractable(false);
             Jeda(2);
@@ -189,11 +193,11 @@ public class StorylineScript : MonoBehaviour
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
             Jeda(3);
             yield return new WaitForSeconds(3);
-            Ketik("Then why are you playing this game?", 14);
+            Ketik("Then why are you playing this game?", 50);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
             Jeda(3);
             yield return new WaitForSeconds(3);
-            Ketik("Do you think that making and managing a company is a piece of cake, huh?", 16);
+            Ketik("Do you think that making and managing a company is a piece of cake, huh?", 50);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
             Jeda(3);
             yield return new WaitForSeconds(3);

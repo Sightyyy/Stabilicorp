@@ -323,7 +323,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -915,7 +915,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter Name
+  m_text: Type your name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e0f1e7ffb1063a45914e8da11d0f956, type: 2}
   m_sharedMaterial: {fileID: -6062423598713926093, guid: 6e0f1e7ffb1063a45914e8da11d0f956, type: 2}
@@ -1386,7 +1386,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter Name
+  m_text: Type your company name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6e0f1e7ffb1063a45914e8da11d0f956, type: 2}
   m_sharedMaterial: {fileID: -6062423598713926093, guid: 6e0f1e7ffb1063a45914e8da11d0f956, type: 2}
@@ -1749,7 +1749,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -35}
+  m_AnchoredPosition: {x: 0, y: -64}
   m_SizeDelta: {x: 1000, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1166452847
@@ -2007,7 +2007,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4281479730
-  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2106,9 +2106,10 @@ MonoBehaviour:
   ceoName: 
   companyName: 
   inGameDate: 0
-  playerReputation: 0
   playerFinance: 0
-  playerMentalHealth: 0
+  workerAmount: 0
+  workerHappiness: 0
+  clientTrust: 0
 --- !u!4 &1749176334
 Transform:
   m_ObjectHideFlags: 0
@@ -2411,7 +2412,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -35}
+  m_AnchoredPosition: {x: 0, y: -64}
   m_SizeDelta: {x: 1000, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2012072009

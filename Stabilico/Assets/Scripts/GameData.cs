@@ -31,6 +31,7 @@ public class GameData : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        Debug.Log("GameData instance initialized.");
     }
 
     // Example of a method to reset all values (optional)

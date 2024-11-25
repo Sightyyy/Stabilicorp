@@ -2336,8 +2336,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000061035156, y: 0}
-  m_SizeDelta: {x: 1575, y: 886}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 1644, y: 925}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1092357030
 MonoBehaviour:
@@ -3068,16 +3068,16 @@ MonoBehaviour:
   BGM: {fileID: 1847556650}
   SFX: {fileID: 42970544}
   mainMenu: {fileID: 8300000, guid: 470c8ac02805b4c4caaecc86d19258f5, type: 3}
-  dungeon: {fileID: 0}
-  dungeon2: {fileID: 0}
-  guild: {fileID: 0}
-  shop: {fileID: 0}
-  battle: {fileID: 0}
+  office: {fileID: 0}
+  clientMeeting: {fileID: 0}
+  gameOver: {fileID: 0}
   UIButtonClick: {fileID: 0}
   UIBackButtonClick: {fileID: 0}
-  slash: {fileID: 0}
-  buy: {fileID: 0}
-  hurt: {fileID: 0}
+  wokerWorking: {fileID: 0}
+  peopleSpeaking: {fileID: 0}
+  dillema: {fileID: 0}
+  statsUp: {fileID: 0}
+  statsDown: {fileID: 0}
 --- !u!4 &1351144806
 Transform:
   m_ObjectHideFlags: 0
@@ -4873,7 +4873,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Game Content
+          m_StringArgument: Pre-Game
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &2138256733

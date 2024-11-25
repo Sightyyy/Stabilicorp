@@ -11,6 +11,9 @@ public class DecisionManager : MonoBehaviour
     public UnityEngine.UI.Button choice1Button; // Button for choice 1
     public UnityEngine.UI.Button choice2Button; // Button for choice 2
 
+    public DayAndTimeManager dayAndTimeManager; // Reference to the DayAndTimeManager script
+    public GameObject eventHappening; // Reference to the event happening UI element
+
     void Start()
     {
         // Initialize events
@@ -46,10 +49,13 @@ public class DecisionManager : MonoBehaviour
             )
         };
 
+        // Initially hide the event happening object
+        eventHappening.SetActive(false);
+
         ShowNextEvent();
     }
 
-    void ShowNextEvent()
+    public void ShowNextEvent()
     {
         if (events.Count == 0)
         {
@@ -77,6 +83,11 @@ public class DecisionManager : MonoBehaviour
     void OnChoiceSelected(Choice choice)
     {
         ApplyStatChanges(choice.statChanges);
+        dayAndTimeManager.ResumeTimeBar(); // Resume the time bar after making a choice
+
+        // Hide the event happening UI again
+        eventHappening.SetActive(false);
+
         ShowNextEvent();
     }
 
@@ -110,5 +121,11 @@ public class DecisionManager : MonoBehaviour
 
         // Log updated stats (optional)
         Debug.Log($"Updated Stats: Finance={GameData.instance.playerFinance}, Workers={GameData.instance.workerAmount}, Happiness={GameData.instance.workerHappiness}, Trust={GameData.instance.clientTrust}");
+    }
+
+    // Method to show the event happening UI
+    public void TriggerEventHappening()
+    {
+        eventHappening.SetActive(true);
     }
 }
