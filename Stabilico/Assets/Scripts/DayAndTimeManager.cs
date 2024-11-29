@@ -1,9 +1,9 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
-using System.Collections.Generic; // To simplify worker selection
 
 public class DayAndTimeManager : MonoBehaviour
 {
@@ -12,8 +12,10 @@ public class DayAndTimeManager : MonoBehaviour
     public TextMeshProUGUI dateText;
     public TextMeshProUGUI yearText;
     public Slider timeProgressBar;
-    public List<GameObject> activeWorkers; // Store references to workers in the scene
-    private Vector3 dispenserPosition = new Vector3(26, 0, 0); // Dispenser's position
+    public Slider workerSlider; // Slider untuk jumlah worker total
+    public GameObject projectProgressBar;
+    public List<GameObject> activeWorkers;
+    private Vector3 dispenserPosition = new Vector3(26, 0, 0);
 
     private string[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
     private string[] monthsOfYear = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
@@ -24,21 +26,21 @@ public class DayAndTimeManager : MonoBehaviour
     private int year = 2024;
     private float timer = 0f;
 
-    public DecisionManager decisionManager; // Reference to the DecisionManager script
-    private bool isPaused = false; // Control to pause time bar
+    public DecisionManager decisionManager; // Reference ke script DecisionManager
+    private bool isPaused = false;
 
     private void Start()
     {
-        // Initialize text elements and slider
         dayText.text = daysOfWeek[dayIndex];
         monthText.text = monthsOfYear[monthIndex];
         dateText.text = date.ToString();
         yearText.text = year.ToString();
         timeProgressBar.maxValue = 60;
         timeProgressBar.value = 0;
+        workerSlider.GetComponent<Slider>();
 
-        // // Find all workers in the scene with the "Worker" tag
-        // activeWorkers = GameObject.FindGameObjectsWithTag("Worker");
+        projectProgressBar.GetComponent<Slider>().maxValue = 100;
+        projectProgressBar.SetActive(false);
 
         StartCoroutine(TimeTracker());
     }
@@ -49,7 +51,7 @@ public class DayAndTimeManager : MonoBehaviour
         {
             if (isPaused)
             {
-                yield return null; // Wait until unpaused
+                yield return null;
                 continue;
             }
 
@@ -66,7 +68,6 @@ public class DayAndTimeManager : MonoBehaviour
 
             timer += 1f;
 
-            // Check for random worker movement at specific times
             if (timer == 10f || timer == 30f)
             {
                 CommandRandomWorkerToDispenser();
@@ -79,6 +80,9 @@ public class DayAndTimeManager : MonoBehaviour
                 decisionManager.TriggerEventHappening(); // Activate the event happening UI
             }
 
+            // Panggil fungsi baru untuk mengisi project progress bar
+            FillProjectProgressBar();
+
             if (timer >= timeProgressBar.maxValue)
             {
                 timer = 0f;
@@ -87,8 +91,6 @@ public class DayAndTimeManager : MonoBehaviour
             }
         }
     }
-
-    // New method to command a random worker
     private void CommandRandomWorkerToDispenser()
     {
         if (activeWorkers.Count == 0) return;
@@ -98,6 +100,54 @@ public class DayAndTimeManager : MonoBehaviour
 
         // Trigger the movement
         randomWorker.GetComponent<WorkerBehavior>().MoveToDispenser(dispenserPosition);
+    }
+
+    private void FillProjectProgressBar()
+    {
+        if (decisionManager.hasProject == 0) return; // Jika tidak ada project, keluar dari fungsi
+
+        Slider projectSlider = projectProgressBar.GetComponent<Slider>();
+        projectProgressBar.SetActive(true);
+
+        // Total waktu yang dibutuhkan untuk menyelesaikan project dalam detik
+        float projectDuration = 60f; // Sesuaikan dengan waktu yang dibutuhkan (misalnya 60 detik untuk 1 project)
+        
+        int totalWorkers = (int)workerSlider.value;
+        int workingWorkers = activeWorkers.Count;
+
+        if (workingWorkers > 0)
+        {
+            // Menghitung progress berdasarkan worker aktif per waktu proyek
+            float progressRate = workingWorkers / ((float)totalWorkers*5);
+            projectSlider.value += (progressRate * (Time.deltaTime / projectDuration)) * 10000; // Persentase progress per waktu
+        }
+
+        // Cek apakah progress telah selesai
+        if (projectSlider.value >= projectSlider.maxValue)
+        {
+            Debug.Log("Project selesai!");
+            decisionManager.hasProject--; // Mengurangi jumlah project yang sedang dikerjakan
+            if (decisionManager.hasProject <= 0)
+            {
+                decisionManager.hasProject = 0;
+                ResetProjectProgressBar();
+            }
+            else
+            {
+                Debug.Log("Masih ada proyek lain yang perlu dikerjakan.");
+                projectSlider.value = 0; // Reset nilai progress untuk proyek berikutnya
+            }
+        }
+    }
+
+
+    private void ResetProjectProgressBar()
+    {
+        Slider projectSlider = projectProgressBar.GetComponent<Slider>();
+        projectSlider.value = 0;
+        projectSlider.maxValue = 100;
+        projectProgressBar.SetActive(false);
+        decisionManager.hasProject = 0;
     }
 
     private void IncrementDay()

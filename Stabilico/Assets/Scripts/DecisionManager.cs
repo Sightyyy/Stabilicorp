@@ -14,6 +14,8 @@ public class DecisionManager : MonoBehaviour
     public DayAndTimeManager dayAndTimeManager; // Reference to the DayAndTimeManager script
     public GameObject eventHappening; // Reference to the event happening UI element
 
+    public int hasProject = 0;
+
     void Start()
     {
         // Initialize events
@@ -53,6 +55,19 @@ public class DecisionManager : MonoBehaviour
         eventHappening.SetActive(false);
 
         ShowNextEvent();
+    }
+
+    public void DebugProject()
+    {
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                hasProject += 1;
+                dayAndTimeManager.projectProgressBar.SetActive(true); // Show the Project Progress Bar
+                Debug.Log("Project Debugging Started!");
+            }
+        }
     }
 
     public void ShowNextEvent()

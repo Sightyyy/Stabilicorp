@@ -127,19 +127,17 @@ public class StorylineScript : MonoBehaviour
         Ketik("So, you finally succeed on getting a diploma...", 60);
         yield return new WaitUntil(() => typingEffect.IsTypingFinished());
 
-        Jeda(3);
-        yield return new WaitForSeconds(3);
+        Jeda(2);
+        yield return new WaitForSeconds(2);
 
         Ketik("And now you want to make your own company, huh?", 60);
         yield return new WaitUntil(() => typingEffect.IsTypingFinished());
 
-        Jeda(3);
-        yield return new WaitForSeconds(3);
+        Jeda(2);
+        yield return new WaitForSeconds(2);
 
         Ketik("Are you ready to face all of the pressure after you create your own company", 60);
         yield return new WaitUntil(() => typingEffect.IsTypingFinished());
-        Jeda(1);
-        yield return new WaitForSeconds(1);
         yesButton.SetActive(true);
         Jeda(0.8f);
         yield return new WaitForSeconds(0.8f);
@@ -153,8 +151,8 @@ public class StorylineScript : MonoBehaviour
         {
             noButton.SetActive(false);
             yesButtonInteractable(false);
-            Jeda(2);
-            yield return new WaitForSeconds(2);
+            Jeda(1);
+            yield return new WaitForSeconds(1);
             yesButton.SetActive(false);
             Ketik("Okay then.", 60);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
@@ -172,11 +170,12 @@ public class StorylineScript : MonoBehaviour
             yield return new WaitUntil(() => isCompanyNameAccepted);
             Ketik("Okay, that's all I needed to know.", 60);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
-            Jeda(3);
-            yield return new WaitForSeconds(3);
+            Jeda(2);
+            yield return new WaitForSeconds(2);
             Ketik("Good luck", 60);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
-            Jeda(3);
+            Jeda(1);
+            yield return new WaitForSeconds(1);
             mainMenu.PlayGame("Game Content 2");
 
 
@@ -186,8 +185,8 @@ public class StorylineScript : MonoBehaviour
         {
             yesButton.SetActive(false);
             noButtonInteractable(false);
-            Jeda(2);
-            yield return new WaitForSeconds(2);
+            Jeda(1);
+            yield return new WaitForSeconds(1);
             noButton.SetActive(false);
             Ketik(".    .    .", 4);
             yield return new WaitUntil(() => typingEffect.IsTypingFinished());
