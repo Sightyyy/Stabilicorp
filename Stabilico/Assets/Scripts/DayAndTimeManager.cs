@@ -15,6 +15,8 @@ public class DayAndTimeManager : MonoBehaviour
     public Slider workerSlider; // Slider untuk jumlah worker total
     public GameObject projectProgressBar;
     public List<GameObject> activeWorkers;
+    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject secretary;
     private Vector3 dispenserPosition = new Vector3(26, 0, 0);
 
     private string[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
@@ -68,6 +70,18 @@ public class DayAndTimeManager : MonoBehaviour
 
             timer += 1f;
 
+            if(timer == 10f)
+            {
+                CommandPlayerAndSecretaryToComeBack();
+                CommandWorkersToComeBack();
+            }
+
+            if(timer == 50f)
+            {
+                CommandPlayerAndSecretaryToGoHome();
+                CommandWorkersToGoHome();
+            }
+
             if (timer == 10f || timer == 30f)
             {
                 CommandRandomWorkerToDispenser();
@@ -89,6 +103,34 @@ public class DayAndTimeManager : MonoBehaviour
                 timeProgressBar.value = 0;
                 IncrementDay();
             }
+        }
+    }
+
+    private void CommandPlayerAndSecretaryToGoHome()
+    {
+        player.GetComponent<PlayerAndSecretaryBehavior>().GoHome(0f); // Player goes home immediately
+        secretary.GetComponent<PlayerAndSecretaryBehavior>().GoHome(0.5f); // Secretary goes home with a delay
+    }
+
+    private void CommandPlayerAndSecretaryToComeBack()
+    {
+        player.GetComponent<PlayerAndSecretaryBehavior>().ComeBackToWork(0f); // Player returns immediately
+        secretary.GetComponent<PlayerAndSecretaryBehavior>().ComeBackToWork(0.5f); // Secretary returns with a delay
+    }
+
+    private void CommandWorkersToGoHome()
+    {
+        for(int i = 0; i < activeWorkers.Count; i++)
+        {
+            activeWorkers[i].GetComponent<WorkerBehavior>().GoHome(i * 0.5f);
+        }
+    }
+
+    private void CommandWorkersToComeBack()
+    {
+        for (int i = 0; i < activeWorkers.Count; i++)
+        {
+            activeWorkers[i].GetComponent<WorkerBehavior>().ComeBackToWork(i * 0.5f); // Add 0.5s delay for spacing
         }
     }
     private void CommandRandomWorkerToDispenser()
