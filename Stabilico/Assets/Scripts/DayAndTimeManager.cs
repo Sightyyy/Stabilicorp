@@ -12,7 +12,7 @@ public class DayAndTimeManager : MonoBehaviour
     public TextMeshProUGUI dateText;
     public TextMeshProUGUI yearText;
     public Slider timeProgressBar;
-    public Slider workerSlider; // Slider untuk jumlah worker total
+    public Slider workerSlider;
     public GameObject projectProgressBar;
     public List<GameObject> activeWorkers;
     [SerializeField] private GameObject player;
@@ -26,9 +26,9 @@ public class DayAndTimeManager : MonoBehaviour
     private int monthIndex = 0;
     private int date = 1;
     private int year = 2024;
-    private float timer = 0f;
+    private float timer; // Timer akan diinisialisasi dengan nilai awal
 
-    public DecisionManager decisionManager; // Reference ke script DecisionManager
+    public DecisionManager decisionManager;
     private bool isPaused = false;
 
     private void Start()
@@ -37,10 +37,12 @@ public class DayAndTimeManager : MonoBehaviour
         monthText.text = monthsOfYear[monthIndex];
         dateText.text = date.ToString();
         yearText.text = year.ToString();
-        timeProgressBar.maxValue = 60;
-        timeProgressBar.value = 0;
-        workerSlider.GetComponent<Slider>();
 
+        timeProgressBar.maxValue = 60;
+        timeProgressBar.value = 11; // Atur nilai awal timeProgressBar
+        timer = timeProgressBar.value; // Sinkronisasi nilai timer dengan nilai awal slider
+
+        workerSlider.GetComponent<Slider>();
         projectProgressBar.GetComponent<Slider>().maxValue = 100;
         projectProgressBar.SetActive(false);
 
@@ -70,31 +72,36 @@ public class DayAndTimeManager : MonoBehaviour
 
             timer += 1f;
 
-            if(timer == 10f)
+            if (timer >= 60f) // Reset jika sudah mencapai maxValue
+            {
+                timer = 0f;
+                timeProgressBar.value = 0;
+                IncrementDay();
+            }
+
+            // Event untuk player dan worker
+            if (timer == 10f)
             {
                 CommandPlayerAndSecretaryToComeBack();
                 CommandWorkersToComeBack();
             }
-
-            if(timer == 50f)
+            if (timer == 50f)
             {
                 CommandPlayerAndSecretaryToGoHome();
                 CommandWorkersToGoHome();
             }
-
             if (timer == 10f || timer == 30f)
             {
                 CommandRandomWorkerToDispenser();
             }
 
-            // Check for trigger points
-            if (timer >= 20f && timer < 21f || timer >= 40f && timer < 41f)
+            // Trigger event
+            if ((timer >= 20f && timer < 21f) || (timer >= 40f && timer < 41f))
             {
                 isPaused = true;
-                decisionManager.TriggerEventHappening(); // Activate the event happening UI
+                decisionManager.TriggerEventHappening();
             }
 
-            // Panggil fungsi baru untuk mengisi project progress bar
             FillProjectProgressBar();
 
             if (timer >= timeProgressBar.maxValue)
