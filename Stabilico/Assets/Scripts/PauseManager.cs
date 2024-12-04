@@ -53,6 +53,6 @@ public class PauseManager : MonoBehaviour
     {
         // SaveGame(); // Save progress before quitting
         Time.timeScale = 1f; // Reset time scale to normal before quitting
-        SceneManager.LoadScene("MainMenu"); // Load the Main Menu scene
+        SceneManager.LoadScene("Main Menu"); // Load the Main Menu scene
     }
 }
