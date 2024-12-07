@@ -177,8 +177,6 @@ public class StorylineScript : MonoBehaviour
             Jeda(1);
             yield return new WaitForSeconds(1);
             mainMenu.PlayGame("Game Content 2");
-
-
         }
         // Jika noClick == 1, jalankan logika No
         else if(noClick == 1)
