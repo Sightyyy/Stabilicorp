@@ -8,6 +8,12 @@ public class TypingEffect : MonoBehaviour
     private string fullText;              // Full text to display
     private float typingSpeed;            // Speed of typing effect
     private bool isTyping = false;        // Flag to check if typing is in progress
+    private AudioCollection audioCollection;
+
+    private void Awake()
+    {
+        audioCollection = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioCollection>();
+    }
 
     // Public method to start typing effect
     public void TypeText(string text, float speed)
@@ -15,6 +21,7 @@ public class TypingEffect : MonoBehaviour
         fullText = text;
         typingSpeed = speed;
         isTyping = true; // Set typing flag
+        audioCollection.PlaySFX(audioCollection.typing);
         StartCoroutine(ShowTextWithTypingEffect());
     }
 
@@ -33,6 +40,7 @@ public class TypingEffect : MonoBehaviour
     // Method to check if typing is finished
     public bool IsTypingFinished()
     {
+        audioCollection.StopSFX();
         return !isTyping;
     }
 

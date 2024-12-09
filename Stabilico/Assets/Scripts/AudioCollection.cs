@@ -11,18 +11,31 @@ public class AudioCollection : MonoBehaviour
 
     [Header("========== Background Music ==========")]
     public AudioClip mainMenu;
+    public AudioClip pregame;
     public AudioClip office;
-    public AudioClip clientMeeting;
     public AudioClip gameOver;
     
     [Header("========== SFX ==========")]
     public AudioClip UIButtonClick;
-    public AudioClip UIBackButtonClick;
-    public AudioClip wokerWorking;
-    public AudioClip peopleSpeaking;
-    public AudioClip dillema;
-    public AudioClip statsUp;
-    public AudioClip statsDown;
+    public AudioClip typing;
+    public AudioClip walking;
+    public AudioClip statsChange;
+
+    private static AudioCollection instance;
+
+    private void Awake()
+    {
+        // Ensure there's only one instance of AudioCollection
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject); // Destroy duplicate instance
+        }
+    }
 
     public void PlayBGM(AudioClip clip)
     {
@@ -36,9 +49,32 @@ public class AudioCollection : MonoBehaviour
         BGM.Stop();
     }
 
+    public void PauseBGM()
+    {
+        if (BGM.isPlaying)
+        {
+            BGM.Pause();
+        }
+    }
+
+    public void ResumeBGM()
+    {
+        if (!BGM.isPlaying)
+        {
+            BGM.UnPause();
+        }
+    }
+
     public void PlaySFX(AudioClip clip)
     {
         SFX.PlayOneShot(clip);
     }
 
+    public void StopSFX()
+    {
+        if (SFX.isPlaying)
+        {
+            SFX.Stop();
+        }
+    }
 }

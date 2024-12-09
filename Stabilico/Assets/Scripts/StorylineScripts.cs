@@ -15,9 +15,11 @@ public class StorylineScript : MonoBehaviour
     private bool isCeoNameAccepted = false;
     private bool isCompanyNameAccepted = false;
     private MainMenu mainMenu;
+    private AudioCollection audioCollection;
 
     void Start()
     {
+        audioCollection.PlayBGM(audioCollection.pregame);
         StartCoroutine(StartStoryline());
     }
 
@@ -45,6 +47,7 @@ public class StorylineScript : MonoBehaviour
 
     public void Awake()
     {
+        audioCollection = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioCollection>();
         mainMenu = GameObject.FindObjectOfType<MainMenu>();
     }
     public void selectYes()

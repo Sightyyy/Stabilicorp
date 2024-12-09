@@ -12,6 +12,7 @@ public class DecisionManager : MonoBehaviour
     public UnityEngine.UI.Button choice2Button; // Button for choice 2
 
     public DayAndTimeManager dayAndTimeManager; // Reference to the DayAndTimeManager script
+    private AudioCollection audioCollection;
     public GameObject eventHappening; // Reference to the event happening UI element
 
     public int hasProject = 0;
@@ -19,6 +20,10 @@ public class DecisionManager : MonoBehaviour
     private int event11num;
     private int event13num;
 
+    private void Awake()
+    {
+        audioCollection = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioCollection>();
+    }
     void Start()
     {
         // Initialize events
@@ -473,6 +478,7 @@ public class DecisionManager : MonoBehaviour
 
     void OnChoiceSelected(Choice choice)
     {
+        audioCollection.PlaySFX(audioCollection.UIButtonClick);
         ApplyStatChanges(choice.statChanges);
         dayAndTimeManager.ResumeTimeBar(); // Resume the time bar after making a choice
 

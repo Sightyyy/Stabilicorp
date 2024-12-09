@@ -3143,17 +3143,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BGM: {fileID: 1847556650}
   SFX: {fileID: 42970544}
-  mainMenu: {fileID: 8300000, guid: 470c8ac02805b4c4caaecc86d19258f5, type: 3}
-  office: {fileID: 0}
-  clientMeeting: {fileID: 0}
-  gameOver: {fileID: 0}
-  UIButtonClick: {fileID: 0}
-  UIBackButtonClick: {fileID: 0}
-  wokerWorking: {fileID: 0}
-  peopleSpeaking: {fileID: 0}
-  dillema: {fileID: 0}
-  statsUp: {fileID: 0}
-  statsDown: {fileID: 0}
+  mainMenu: {fileID: 8300000, guid: dad2e52efacf8b04da8153eef7386d14, type: 3}
+  pregame: {fileID: 8300000, guid: d46e22a59f3e76142ab2882611ded094, type: 3}
+  office: {fileID: 8300000, guid: 5c8c5542585c4c84fbcbae6c8f31ba24, type: 3}
+  gameOver: {fileID: 8300000, guid: 5d3a4fa043293054a92666254068a0f5, type: 3}
+  UIButtonClick: {fileID: 8300000, guid: 06a48ed4cf871eb49a7347f929aa0186, type: 3}
+  typing: {fileID: 8300000, guid: 1b246c8f45dc96641986baf435857405, type: 3}
+  walking: {fileID: 8300000, guid: 93bbde57a2df95043ad6beaf709a9170, type: 3}
+  statsChange: {fileID: 0}
 --- !u!4 &1351144806
 Transform:
   m_ObjectHideFlags: 0
@@ -3163,7 +3160,7 @@ Transform:
   m_GameObject: {fileID: 1351144804}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 377.35828, y: 276.35126, z: 4903.381}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4791,7 +4788,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -4.532837, y: 0}
+  m_AnchoredPosition: {x: -4.532715, y: 0}
   m_SizeDelta: {x: -323.2246, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2113860986

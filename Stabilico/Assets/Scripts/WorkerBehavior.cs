@@ -10,6 +10,12 @@ public class WorkerBehavior : MonoBehaviour
     private Vector3 homePosition = new Vector3(25, -6, 0);
     public int row;
     [SerializeField] private GameObject waypoint;
+    private AudioCollection audioCollection;
+
+    private void Awake()
+    {
+        audioCollection = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioCollection>();
+    }
 
     private void Start()
     {
@@ -49,6 +55,7 @@ public class WorkerBehavior : MonoBehaviour
 
     public void GoHome(float delay)
     {
+        audioCollection.PlaySFX(audioCollection.walking);
         StartCoroutine(WalkToHome(delay));
     }
 
@@ -70,6 +77,7 @@ public class WorkerBehavior : MonoBehaviour
 
     public void ComeBackToWork(float delay)
     {
+        audioCollection.PlaySFX(audioCollection.walking);
         StartCoroutine(WalkToWork(delay));
     }
 
@@ -92,6 +100,7 @@ public class WorkerBehavior : MonoBehaviour
     // Public method to start moving the worker to the dispenser
     public void MoveToDispenser(Vector3 dispenserPosition)
     {
+        audioCollection.PlaySFX(audioCollection.walking);
         StartCoroutine(WalkToDispenser(dispenserPosition));
     }
 
