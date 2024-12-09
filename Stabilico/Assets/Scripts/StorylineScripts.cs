@@ -81,6 +81,10 @@ public class StorylineScript : MonoBehaviour
         {
             string ceoName = ceoNameInput.text.Trim();
 
+            if (ceoName.Contains("Frederick") || ceoName.Contains("Kayla") || ceoName.Contains("Sightyy") || ceoName.Contains("Scarlet"))
+            {
+                Ketik("Unfortunately... this name is taken, type another one :>", 60);
+            }
             if (ceoName.Length >= 4 && ceoName.Length <= 20)
             {
                 GameData.instance.ceoName = ceoName;
@@ -93,7 +97,7 @@ public class StorylineScript : MonoBehaviour
             }
             else
             {
-                Debug.Log($"Invalid CEO Name. Must be 4-20 characters. You entered: {ceoName.Length} characters.");
+                Ketik("Invalid CEO Name. Must be 4-20 characters.", 40);
             }
         }
     }
@@ -117,7 +121,7 @@ public class StorylineScript : MonoBehaviour
             }
             else
             {
-                Debug.Log($"Invalid CEO Name. Must be 4-20 characters. You entered: {companyName.Length} characters.");
+                Ketik("Invalid Company Name. Must be 4-20 characters.", 40);
             }
         }
     }
