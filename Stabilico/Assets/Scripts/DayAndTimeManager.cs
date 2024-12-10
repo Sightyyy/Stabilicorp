@@ -34,6 +34,9 @@ public class DayAndTimeManager : MonoBehaviour
 
     public DecisionManager decisionManager;
     private bool isPaused = false;
+    public bool isDeficient = false;
+    public bool isVeryDeficient = false;
+    public bool isUnhappy = false;
 
     private void Start()
     {
@@ -210,6 +213,18 @@ public class DayAndTimeManager : MonoBehaviour
 
     private void IncrementDay()
     {
+        if(isDeficient)
+        {
+            gameData.workerAmount -= 5;
+        }
+        if(isVeryDeficient)
+        {
+            gameData.workerAmount -= 10;
+        }
+        if(isUnhappy)
+        {
+            gameData.workerHappiness -= 10;
+        }
         dayIndex = (dayIndex + 1) % daysOfWeek.Length;
         dayText.text = daysOfWeek[dayIndex];
         IncrementDate();
@@ -221,16 +236,16 @@ public class DayAndTimeManager : MonoBehaviour
     {
         int maxDaysInMonth = GetDaysInMonth(monthIndex, year);
         date++;
-        if(gameData.playerFinance == 0 || gameData.workerHappiness == 0)
-        {
-            gameData.workerHappiness -= 10;
-            gameData.workerAmount -= 5;
-        }
-        if (gameData.playerFinance == 0 && gameData.workerHappiness == 0)
-        {
-            gameData.workerHappiness -= 10;
-            gameData.workerAmount -= 10;
-        }
+        // if(gameData.playerFinance == 0 || gameData.workerHappiness == 0)
+        // {
+        //     gameData.workerHappiness -= 10;
+        //     gameData.workerAmount -= 5;
+        // }
+        // if (gameData.playerFinance == 0 && gameData.workerHappiness == 0)
+        // {
+        //     gameData.workerHappiness -= 10;
+        //     gameData.workerAmount -= 10;
+        // }
 
         if (date > maxDaysInMonth)
         {

@@ -6128,8 +6128,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77256fc527164174c97bad69e70397a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Finance: {fileID: 647831577}
-  Worker: {fileID: 540142728}
 --- !u!1 &1012185391
 GameObject:
   m_ObjectHideFlags: 0
@@ -8681,7 +8679,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1701416037}
   m_Layer: 0
-  m_Name: WorkerSpawner
+  m_Name: WorkerRespawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

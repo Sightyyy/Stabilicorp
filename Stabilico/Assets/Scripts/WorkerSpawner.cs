@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WorkerSpawner : MonoBehaviour
@@ -14,12 +16,12 @@ public class WorkerSpawner : MonoBehaviour
     private int currentWorkerDisplayCount = 0;
     private DayAndTimeManager dayAndTimeManager;
 
-    private void Start()
+    void Start()
     {
         dayAndTimeManager = FindObjectOfType<DayAndTimeManager>();
     }
 
-    private void Update()
+    void Update()
     {
         // Get the worker amount from GameData
         int workerAmount = GameData.instance.workerAmount;
@@ -34,8 +36,11 @@ public class WorkerSpawner : MonoBehaviour
         }
         else if (targetWorkerDisplayCount < currentWorkerDisplayCount)
         {
+            Debug.Log("Remove Worker");
             RemoveWorkers(currentWorkerDisplayCount - targetWorkerDisplayCount);
         }
+
+        dayAndTimeManager.activeWorkers.RemoveAll(x=>x==null);
     }
 
     private void AddWorkers(int count)
@@ -72,10 +77,12 @@ public class WorkerSpawner : MonoBehaviour
         // Remove workers from the parent transform
         for (int i = 0; i < count; i++)
         {
-            if (workerParent.childCount > 0)
+            if (workerParent.childCount > 0 && i < workerParent.childCount)
             {
-                dayAndTimeManager.activeWorkers.Remove(workerParent.GetChild(workerParent.childCount - 1).gameObject);
-                Destroy(workerParent.GetChild(workerParent.childCount - 1).gameObject);
+                Debug.Log("Remove one worker");
+                Debug.Log(workerParent.GetChild(i).gameObject.name);
+                // dayAndTimeManager.activeWorkers.Remove(workerParent.GetChild(workerParent.childCount - 1).gameObject);
+                Destroy(workerParent.GetChild(i).gameObject);
             }
         }
 
