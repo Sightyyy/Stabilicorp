@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class GameOver : MonoBehaviour
 {
     private AudioCollection audioCollection;
+    private GameData gameData;
     void Awake()
     {
         audioCollection = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioCollection>();
+        gameData = FindObjectOfType<GameData>();
     }
     // Start is called before the first frame update
     void Start()
@@ -15,9 +18,12 @@ public class GameOver : MonoBehaviour
         audioCollection.PlayBGM(audioCollection.gameOver);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void StartOver()
     {
-        
+        audioCollection.PlaySFX(audioCollection.UIButtonClick);
+        gameData.ResetData();
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save(); // Ensure the deletion is written immediately
+        SceneManager.LoadScene("Main Menu");
     }
 }

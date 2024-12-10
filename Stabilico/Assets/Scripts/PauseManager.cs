@@ -7,10 +7,12 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private GameObject settingsPanel; // The Settings Panel UI
 
     private AudioCollection audioCollection;
+    private GameData gameData;
 
     private void Awake()
     {
         audioCollection = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioCollection>();
+        gameData = FindObjectOfType<GameData>();
     }
 
     private void Start()
@@ -57,19 +59,9 @@ public class PauseManager : MonoBehaviour
         pausePanel.SetActive(true); // Return to the pause panel
     }
 
-    public void SaveGame()
-    {
-        // // Example of saving data using PlayerPrefs (replace with your save system)
-        // PlayerPrefs.SetInt("PlayerScore", currentScore); // Save player's score
-        // PlayerPrefs.SetFloat("PlayerPositionX", player.transform.position.x); // Save player's position
-        // PlayerPrefs.SetFloat("PlayerPositionY", player.transform.position.y); // Save player's position
-        // PlayerPrefs.Save(); // Commit changes
-        // Debug.Log("Game progress saved!");
-    }
-
     public void QuitToMainMenu()
     {
-        // SaveGame(); // Save progress before quitting
+        gameData.SaveData();
         Time.timeScale = 1f; // Reset time scale to normal before quitting
         audioCollection.PlaySFX(audioCollection.UIButtonClick);
         SceneManager.LoadScene("Main Menu"); // Load the Main Menu scene

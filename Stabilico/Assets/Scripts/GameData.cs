@@ -34,15 +34,30 @@ public class GameData : MonoBehaviour
         Debug.Log("GameData instance initialized.");
     }
 
+    // Method to save game data
+    public void SaveData()
+    {
+        PlayerPrefs.SetString("CeoName", ceoName);
+        PlayerPrefs.SetString("CompanyName", companyName);
+        PlayerPrefs.SetInt("InGameDate", inGameDate);
+        PlayerPrefs.SetInt("PlayerFinance", playerFinance);
+        PlayerPrefs.SetInt("WorkerAmount", workerAmount);
+        PlayerPrefs.SetInt("WorkerHappiness", workerHappiness);
+        PlayerPrefs.SetInt("ClientTrust", clientTrust);
+
+        PlayerPrefs.Save(); // Ensure the data is written to disk
+        Debug.Log("Game data saved.");
+    }
+
     // Example of a method to reset all values (optional)
     public void ResetData()
     {
         ceoName = "";
         companyName = "";
-        inGameDate = 0;
-        playerFinance = 0;
-        workerAmount = 0;
-        workerHappiness = 0;
-        clientTrust = 0;
+        // inGameDate = 0; // Not sure how to fix this one
+        playerFinance = 50;
+        workerAmount = 20;
+        workerHappiness = 50;
+        clientTrust = 50;
     }
 }

@@ -25,8 +25,14 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame(string sceneName)
     {
+        // Check if the key "CeoName" exists and its value isn't null or empty
+        if (PlayerPrefs.HasKey("CeoName") && !string.IsNullOrEmpty(PlayerPrefs.GetString("CeoName")))
+        {
+            sceneName = "Game Content 2"; // Set the scene to "Game Content 2"
+        }
         StartCoroutine(TransitionToScene(sceneName));
     }
+
 
     public void QuitGame()
     {
