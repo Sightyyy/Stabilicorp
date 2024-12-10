@@ -6,13 +6,17 @@ using UnityEngine.UI;
 
 public class ContinueOrDefeat : MonoBehaviour
 {
-    public Slider Finance;
-    public Slider Worker;
+    private GameData gameData;
+
+    void Start()
+    {
+        gameData = GameData.instance;
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if(Finance.value == 0 && Worker.value == 0)
+        if(gameData.playerFinance == 0 && gameData.workerAmount == 0)
         {
             SceneManager.LoadScene("Game Over");
         }

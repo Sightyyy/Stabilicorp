@@ -102,7 +102,7 @@ public class DayAndTimeManager : MonoBehaviour
             }
 
             // Trigger event
-            if ((timer >= 20f && timer < 21f) || (timer >= 40f && timer < 41f))
+            if ((timer >= 20f && timer < 21f) || (timer >= 40f && timer < 41f) || (timer >= 30 && timer < 31))
             {
                 isPaused = true;
                 decisionManager.TriggerEventHappening();
@@ -221,19 +221,17 @@ public class DayAndTimeManager : MonoBehaviour
     {
         int maxDaysInMonth = GetDaysInMonth(monthIndex, year);
         date++;
-        int conditionDate = date % 5;
-
-        if (conditionDate == 0)
+        if(gameData.playerFinance == 0 || gameData.workerHappiness == 0)
         {
-            if(financeSlider.value == 0 || happinessSlider.value == 0)
-            {
-                workerSlider.value -= 5;
-            }
-            else if (financeSlider.value == 0 && happinessSlider.value == 0)
-            {
-                workerSlider.value -= 10;
-            }
+            gameData.workerHappiness -= 10;
+            gameData.workerAmount -= 5;
         }
+        if (gameData.playerFinance == 0 && gameData.workerHappiness == 0)
+        {
+            gameData.workerHappiness -= 10;
+            gameData.workerAmount -= 10;
+        }
+
         if (date > maxDaysInMonth)
         {
             date = 1;
