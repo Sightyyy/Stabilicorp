@@ -7,12 +7,16 @@ using System.Linq;
 
 public class DayAndTimeManager : MonoBehaviour
 {
+    private GameData gameData;
+
     public TextMeshProUGUI dayText;
     public TextMeshProUGUI monthText;
     public TextMeshProUGUI dateText;
     public TextMeshProUGUI yearText;
     public Slider timeProgressBar;
     public Slider workerSlider;
+    public Slider financeSlider;
+    public Slider happinessSlider;
     public GameObject projectProgressBar;
     public List<GameObject> activeWorkers;
     [SerializeField] private GameObject player;
@@ -33,6 +37,8 @@ public class DayAndTimeManager : MonoBehaviour
 
     private void Start()
     {
+        gameData = GameData.instance;
+        LoadTimeFromGameData();
         dayText.text = daysOfWeek[dayIndex];
         monthText.text = monthsOfYear[monthIndex];
         dateText.text = date.ToString();
@@ -164,11 +170,14 @@ public class DayAndTimeManager : MonoBehaviour
         int totalWorkers = (int)workerSlider.value;
         int workingWorkers = activeWorkers.Count;
 
-        if (workingWorkers > 0)
+        if (timer > 10 && timer < 50)
         {
-            // Menghitung progress berdasarkan worker aktif per waktu proyek
-            float progressRate = workingWorkers / ((float)totalWorkers*5);
-            projectSlider.value += (progressRate * (Time.deltaTime / projectDuration)) * 10000; // Persentase progress per waktu
+            if (workingWorkers > 0)
+            {
+                // Menghitung progress berdasarkan worker aktif per waktu proyek
+                float progressRate = workingWorkers / ((float)totalWorkers*5);
+                projectSlider.value += (progressRate * (Time.deltaTime / projectDuration)) * 10000; // Persentase progress per waktu
+            }
         }
 
         // Cek apakah progress telah selesai
@@ -204,13 +213,27 @@ public class DayAndTimeManager : MonoBehaviour
         dayIndex = (dayIndex + 1) % daysOfWeek.Length;
         dayText.text = daysOfWeek[dayIndex];
         IncrementDate();
+
+        SaveTimeToGameData();
     }
 
     private void IncrementDate()
     {
         int maxDaysInMonth = GetDaysInMonth(monthIndex, year);
         date++;
+        int conditionDate = date % 5;
 
+        if (conditionDate == 0)
+        {
+            if(financeSlider.value == 0 || happinessSlider.value == 0)
+            {
+                workerSlider.value -= 5;
+            }
+            else if (financeSlider.value == 0 && happinessSlider.value == 0)
+            {
+                workerSlider.value -= 10;
+            }
+        }
         if (date > maxDaysInMonth)
         {
             date = 1;
@@ -248,5 +271,35 @@ public class DayAndTimeManager : MonoBehaviour
     public void ResumeTimeBar()
     {
         isPaused = false;
+    }
+    private void LoadTimeFromGameData()
+    {
+        // Load values from GameData
+        dayIndex = gameData.currentDay;
+        monthIndex = gameData.currentMonth;
+        date = gameData.currentDate;
+        year = gameData.currentYear;
+        timer = gameData.timeBarValue;
+
+        // Update UI
+        dayText.text = daysOfWeek[dayIndex];
+        monthText.text = monthsOfYear[monthIndex];
+        dateText.text = date.ToString();
+        yearText.text = year.ToString();
+        timeProgressBar.value = timer;
+
+        Debug.Log("Time loaded from GameData.");
+    }
+
+    private void SaveTimeToGameData()
+    {
+        gameData.currentDay = dayIndex;
+        gameData.currentMonth = monthIndex;
+        gameData.currentDate = date;
+        gameData.currentYear = year;
+        gameData.timeBarValue = timer;
+
+        gameData.SaveData();
+        Debug.Log("Time saved to GameData.");
     }
 }

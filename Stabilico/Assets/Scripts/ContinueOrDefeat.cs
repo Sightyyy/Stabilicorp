@@ -2,20 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ContinueOrDefeat : MonoBehaviour
 {
-    private GameData gameData;
-
-    void Start()
-    {
-        gameData = FindObjectOfType<GameData>();
-    }
+    public Slider Finance;
+    public Slider Worker;
 
     // Update is called once per frame
     void Update()
     {
-        if(gameData.playerFinance == 0 || gameData.workerAmount == 0 || gameData.workerHappiness == 0 || gameData.clientTrust == 0)
+        if(Finance.value == 0 && Worker.value == 0)
         {
             SceneManager.LoadScene("Game Over");
         }
