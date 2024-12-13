@@ -1,4 +1,5 @@
 using System.Collections;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class PlayerAndSecretaryBehavior : MonoBehaviour
@@ -8,6 +9,7 @@ public class PlayerAndSecretaryBehavior : MonoBehaviour
     private Vector3 workPosition;
     private Vector3 homePosition;
     private Vector3 intermediatePosition;
+    public bool isMoving = false;
 
     private void Start()
     {
@@ -36,12 +38,14 @@ public class PlayerAndSecretaryBehavior : MonoBehaviour
         // Move toward the target position
         if (Vector3.Distance(transform.position, targetPosition) > 0.1f)
         {
+            Debug.Log(isMoving);
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
         }
     }
 
     public void GoHome(float delay)
     {
+        isMoving = true;
         StartCoroutine(WalkToHome(delay));
     }
 
@@ -55,10 +59,14 @@ public class PlayerAndSecretaryBehavior : MonoBehaviour
 
         // Step 2: Move to home position
         targetPosition = homePosition;
+
+        yield return new WaitForSeconds(1f);
+        isMoving = false;
     }
 
     public void ComeBackToWork(float delay)
     {
+        isMoving = true;
         StartCoroutine(WalkToWork(delay));
     }
 
@@ -72,5 +80,8 @@ public class PlayerAndSecretaryBehavior : MonoBehaviour
 
         // Step 2: Move to work position
         targetPosition = workPosition;
+
+        yield return new WaitForSeconds(5f);
+        isMoving = false;
     }
 }

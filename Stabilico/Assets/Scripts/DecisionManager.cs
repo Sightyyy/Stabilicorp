@@ -14,6 +14,7 @@ public class DecisionManager : MonoBehaviour
     public DayAndTimeManager dayAndTimeManager; // Reference to the DayAndTimeManager script
     private AudioCollection audioCollection;
     public GameObject eventHappening; // Reference to the event happening UI element
+    private SecretaryInteraction secretaryInteraction;
 
     public int hasProject = 0;
     private int event7num;
@@ -23,6 +24,7 @@ public class DecisionManager : MonoBehaviour
     private void Awake()
     {
         audioCollection = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioCollection>();
+        secretaryInteraction = FindObjectOfType<SecretaryInteraction>();
     }
     void Start()
     {
@@ -484,7 +486,8 @@ public class DecisionManager : MonoBehaviour
 
         // Hide the event happening UI again
         eventHappening.SetActive(false);
-
+        secretaryInteraction.enabled = true;
+        
         ShowNextEvent();
     }
 

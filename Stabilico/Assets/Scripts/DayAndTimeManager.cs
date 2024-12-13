@@ -37,9 +37,15 @@ public class DayAndTimeManager : MonoBehaviour
     public bool isDeficient = false;
     public bool isVeryDeficient = false;
     public bool isUnhappy = false;
+    public bool isHiring = false;
+    public bool isNewWorker = false;
+    public bool isNoWorker = false;
+    public bool isTired = false;
+    private SecretaryInteraction secretaryInteraction;
 
     private void Start()
     {
+        secretaryInteraction = FindObjectOfType<SecretaryInteraction>();
         gameData = GameData.instance;
         LoadTimeFromGameData();
         dayText.text = daysOfWeek[dayIndex];
@@ -93,6 +99,15 @@ public class DayAndTimeManager : MonoBehaviour
             {
                 CommandPlayerAndSecretaryToComeBack();
                 CommandWorkersToComeBack();
+                if(isNewWorker)
+                {
+                    gameData.workerAmount += 5;
+                    isTired = true;
+                }
+                else if(isNoWorker)
+                {
+                    isTired = true;
+                }
             }
             if (timer == 50f)
             {
@@ -108,6 +123,7 @@ public class DayAndTimeManager : MonoBehaviour
             if ((timer >= 20f && timer < 21f) || (timer >= 40f && timer < 41f) || (timer >= 30 && timer < 31))
             {
                 isPaused = true;
+                secretaryInteraction.enabled = false;
                 decisionManager.TriggerEventHappening();
             }
 
@@ -213,6 +229,24 @@ public class DayAndTimeManager : MonoBehaviour
 
     private void IncrementDay()
     {
+        int rand = Random.Range(0, 2);
+        if(isTired)
+        {
+            isTired = false;
+        }
+        if(isHiring)
+        {
+            if(rand == 0)
+            {
+                isNoWorker = true;
+                isHiring = false;
+            }
+            else
+            {
+                isNewWorker = true;
+                isHiring = false;
+            }
+        }
         if(isDeficient)
         {
             gameData.workerAmount -= 5;
