@@ -12,17 +12,13 @@ public class SliderManager : MonoBehaviour
     [SerializeField] private Slider workerHappinessSlider;
     [SerializeField] private Slider clientTrustSlider;
 
-    private void Start()
-    {
-        ceoNameDisplay.text = GameData.instance.ceoName;
-        companyNameDisplay.text = GameData.instance.companyName;
-    }
-
     private void Update()
     {
         if (GameData.instance != null)
         {
             // Update slider values based on GameData values
+            ceoNameDisplay.text = GameData.instance.ceoName;
+            companyNameDisplay.text = GameData.instance.companyName;
             financeSlider.value = GameData.instance.playerFinance;
             workerAmountSlider.value = GameData.instance.workerAmount;
             workerHappinessSlider.value = GameData.instance.workerHappiness;

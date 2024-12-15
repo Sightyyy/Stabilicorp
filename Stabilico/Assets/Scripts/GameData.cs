@@ -37,13 +37,13 @@ public class GameData : MonoBehaviour
         if (instance != null && instance != this)
         {
             Destroy(gameObject);
+            Debug.LogWarning("Duplicate GameData instance destroyed.");
+            return;
         }
-        else
-        {
-            // Set this as the Singleton instance and make it persist across scenes
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+
+        // Set this as the Singleton instance
+        instance = this;
+
         Debug.Log("GameData instance initialized.");
     }
 
@@ -93,6 +93,8 @@ public class GameData : MonoBehaviour
     // Optional reset data method
     public void ResetData()
     {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
         ceoName = "";
         companyName = "";
         inGameDate = 0;

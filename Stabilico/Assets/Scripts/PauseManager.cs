@@ -64,6 +64,6 @@ public class PauseManager : MonoBehaviour
         gameData.SaveData();
         Time.timeScale = 1f; // Reset time scale to normal before quitting
         audioCollection.PlaySFX(audioCollection.UIButtonClick);
-        SceneManager.LoadScene("Main Menu"); // Load the Main Menu scene
+        SceneManager.LoadScene(0); // Load the Main Menu scene
     }
 }

@@ -20,6 +20,7 @@ public class ContinueOrDefeat : MonoBehaviour
     {
         if(gameData.workerAmount == 0)
         {
+            gameData.ResetData();
             SceneManager.LoadScene("Game Over");
         }
 

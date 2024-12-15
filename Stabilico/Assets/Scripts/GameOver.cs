@@ -21,9 +21,6 @@ public class GameOver : MonoBehaviour
     public void StartOver()
     {
         audioCollection.PlaySFX(audioCollection.UIButtonClick);
-        gameData.ResetData();
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save(); // Ensure the deletion is written immediately
         SceneManager.LoadScene("Main Menu");
     }
 }

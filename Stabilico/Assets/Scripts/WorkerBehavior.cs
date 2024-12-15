@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WorkerBehavior : MonoBehaviour
 {
-    private float moveSpeed = 2f;
+    private float moveSpeed = 5f;
     private Vector3 targetPosition;
     private Vector3 tablePosition;
     private Vector3 homePosition = new Vector3(25, -6, 0);
