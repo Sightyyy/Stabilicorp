@@ -29,13 +29,18 @@ public class CreditsScroll : MonoBehaviour
             creditsText.anchoredPosition += Vector2.up * scrollSpeed * Time.deltaTime;
 
             // Hitung posisi akhir
-            float endPositionY = creditsText.rect.height + maskArea.rect.height;
+            float endPositionY = creditsText.rect.height + maskArea.rect.height + 1080;
 
             // Periksa apakah teks sudah melewati batas akhir
-            if (creditsText.anchoredPosition.y >= endPositionY && !isResetting)
+            if (creditsText.anchoredPosition.y >= endPositionY)
             {
-                isResetting = true;
-                Invoke("ResetCreditsPosition", resetDelay);  // Tunggu sebentar sebelum reset
+                StopScrolling();
+                if (!isResetting)
+                {
+                    // Menunda proses reset posisi dan aktifkan objek setelah scroll selesai
+                    isResetting = true;
+                    Invoke("ResetCreditsPosition", resetDelay); // Tunggu sebentar sebelum reset
+                }
             }
         }
     }
