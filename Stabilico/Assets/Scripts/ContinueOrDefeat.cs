@@ -24,7 +24,7 @@ public class ContinueOrDefeat : MonoBehaviour
             SceneManager.LoadScene("Game Over");
         }
 
-        if(gameData.playerFinance == 0 && gameData.workerHappiness == 0)
+        if(gameData.playerFinance <= 0 && gameData.workerHappiness == 0)
         {
             dayAndTimeManager.isVeryDeficient = true;
         }
@@ -33,7 +33,7 @@ public class ContinueOrDefeat : MonoBehaviour
             dayAndTimeManager.isVeryDeficient = false;
         }
 
-        if(gameData.playerFinance == 0 && dayAndTimeManager.isVeryDeficient == false && dayAndTimeManager.isDeficient == false)
+        if(gameData.playerFinance <= 0 && dayAndTimeManager.isVeryDeficient == false && dayAndTimeManager.isDeficient == false)
         {
             dayAndTimeManager.isUnhappy = true;
         }
@@ -42,7 +42,7 @@ public class ContinueOrDefeat : MonoBehaviour
             dayAndTimeManager.isUnhappy = false;
         }
 
-        if(gameData.workerHappiness == 0 && dayAndTimeManager.isVeryDeficient == false)
+        if(gameData.workerHappiness <= 0 && dayAndTimeManager.isVeryDeficient == false)
         {
             dayAndTimeManager.isDeficient = true;
         }

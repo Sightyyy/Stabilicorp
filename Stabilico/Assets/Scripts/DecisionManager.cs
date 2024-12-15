@@ -4,12 +4,15 @@ using TMPro;
 
 public class DecisionManager : MonoBehaviour
 {
-    public List<DecisionEvent> events; // List of events
+    public List<DecisionEvent> events; // All events (persistent list)
+    private List<DecisionEvent> availableEvents; // Track available events
     private DecisionEvent currentEvent;
 
     public TextMeshProUGUI eventDescription; // UI text to show event description
     public UnityEngine.UI.Button choice1Button; // Button for choice 1
     public UnityEngine.UI.Button choice2Button; // Button for choice 2
+    public UnityEngine.UI.Button choice3Button;
+    public UnityEngine.UI.Button choice4Button;
 
     public DayAndTimeManager dayAndTimeManager; // Reference to the DayAndTimeManager script
     private AudioCollection audioCollection;
@@ -33,34 +36,6 @@ public class DecisionManager : MonoBehaviour
         {
             new DecisionEvent(
                 "Event 1",
-                "Your company faces a new challenge. Choose wisely!",
-                new Choice("Invest in new technology", new Dictionary<string, int>
-                {
-                    { "playerFinance", -20 },
-                    { "clientTrust", 10 }
-                }),
-                new Choice("Cut costs by reducing benefits", new Dictionary<string, int>
-                {
-                    { "workerHappiness", -15 },
-                    { "playerFinance", 15 }
-                })
-            ),
-            new DecisionEvent(
-                "Event 2",
-                "A scandal threatens your reputation. How do you respond?",
-                new Choice("Public apology", new Dictionary<string, int>
-                {
-                    { "clientTrust", -5 },
-                    { "playerFinance", -10 }
-                }),
-                new Choice("Deny allegations", new Dictionary<string, int>
-                {
-                    { "clientTrust", -20 },
-                    { "workerHappiness", 5 }
-                })
-            ),
-            new DecisionEvent(
-                "Event 3",
                 "The water dispenser is broken",
                 new Choice("Repair it", new Dictionary<string, int>
                 {
@@ -69,10 +44,18 @@ public class DecisionManager : MonoBehaviour
                 new Choice("Leave it", new Dictionary<string, int>
                 {
                     { "workerHappiness", -5 }
+                }),
+                new Choice("Buy a new one", new Dictionary<string, int>
+                {
+                    { "playerFinance", -10 }
+                }),
+                new Choice("Upgrade it", new Dictionary<string, int>
+                {
+                    { "playerFinance", -10 }
                 })
             ),
             new DecisionEvent(
-                "Event 4",
+                "Event 2",
                 "The workers are sleeping while working",
                 new Choice("Wake them & threaten them", new Dictionary<string, int>
                 {
@@ -83,10 +66,21 @@ public class DecisionManager : MonoBehaviour
                 {
                     { "workerHappiness", 10 },
                     { "clientTrust", -20 }
+                }),
+                new Choice("Let them sleep", new Dictionary<string, int>
+                {
+                    { "workerHappiness", 20 },
+                    { "clientTrust", -50}
+                }),
+                new Choice("Instantly fire them after waking them", new Dictionary<string, int>
+                {
+                    { "workerHappiness", -40 },
+                    { "clientTrust", 30},
+                    { "workerAmount", -5}
                 })
             ),
             new DecisionEvent(
-                "Event 5",
+                "Event 3",
                 "We need to persuade people to work here",
                 new Choice("Dictatorship-like tone", new Dictionary<string, int>
                 {
@@ -95,10 +89,18 @@ public class DecisionManager : MonoBehaviour
                 new Choice("Leader-like tone", new Dictionary<string, int>
                 {
                     { "workerHappiness", 5 }
+                }),
+                new Choice("Pessimistic tone", new Dictionary<string, int>
+                {
+                    { "workerHappiness", -15 }
+                }),
+                new Choice("Say nothing", new Dictionary<string, int>
+                {
+                    { "clientTrust", -5 }
                 })
             ),
             new DecisionEvent(
-                "Event 6",
+                "Event 4",
                 "Our server data got leaked to our clients",
                 new Choice("Apologize", new Dictionary<string, int>
                 {
@@ -108,48 +110,62 @@ public class DecisionManager : MonoBehaviour
                 {
                     { "playerFinance", -10 },
                     { "clientTrust", -20 }
+                }),
+                new Choice("Frame the clients", new Dictionary<string, int>
+                {
+                    { "clientTrust", -60}
+                }),
+                new Choice("It's not my responsibility", new Dictionary<string, int>
+                {
+                    { "clientTrust", -100},
+                    { "workerHappiness", -40 }
+                })
+            ),
+            new DecisionEvent(
+                "Event 5",
+                "An investor wants to invest to our company",
+                new Choice("Gladly accept it", new Dictionary<string, int>
+                {
+                    { "playerFinance", 10 }
+                }),
+                new Choice("Demand increased budget", new Dictionary<string, int>
+                {
+                    { "playerFinance", 15 },
+                }),
+                new Choice("Politely refuse", new Dictionary<string, int>
+                {
+                    { "playerFinance", 0 }
+                }),
+                new Choice("Accept half of it", new Dictionary<string, int>
+                {
+                    { "playerFinance", 5 }
+                })
+            ),
+            new DecisionEvent(
+                "Event 6",
+                "Our server hub needs to be upgraded",
+                new Choice("For the sake of data safety", new Dictionary<string, int>
+                {
+                    { "playerFinance", -15 },
+                    { "clientTrust", 20 }
+                }),
+                new Choice("We need the money for other things", new Dictionary<string, int>
+                {
+                    { "clientTrust", -10 }
+                }),
+                new Choice("A server hub? We don’t need it for now", new Dictionary<string, int>
+                {
+                    { "workerHappiness", -25 },
+                    { "clientTrust", -40 }
+                }),
+                new Choice("Another client could help us with this problem. Sign up with them.", new Dictionary<string, int>
+                {
+                    { "playerFinance", -35 },
+                    { "clientTrust", 5 }
                 })
             ),
             new DecisionEvent(
                 "Event 7",
-                "An investor wants to invest to our company",
-                new Choice("Gladly accept it", new Dictionary<string, int>
-                {
-                    { "playerFinance", 10}
-                }),
-                new Choice("Demand increased budget", new Dictionary<string, int>
-                {
-                    { "playerFinance", event7num },
-                })
-            ),
-            new DecisionEvent(
-                "Event 8",
-                "Our server hub needs to be upgraded",
-                new Choice("For the sake of data safety", new Dictionary<string, int>
-                {
-                    { "playerFinance", -15 },
-                    { "clientTrust", 20 }
-                }),
-                new Choice("We need the money for other things", new Dictionary<string, int>
-                {
-                    { "clientTrust", -10 }
-                })
-            ),
-            new DecisionEvent(
-                "Event 9",
-                "Our server hub needs to be upgraded",
-                new Choice("For the sake of data safety", new Dictionary<string, int>
-                {
-                    { "playerFinance", -15 },
-                    { "clientTrust", 20 }
-                }),
-                new Choice("We need the money for other things", new Dictionary<string, int>
-                {
-                    { "clientTrust", -10 }
-                })
-            ),
-            new DecisionEvent(
-                "Event 10",
                 "The client's CEO invites you to dinner at a fancy restaurant",
                 new Choice("Accepts it", new Dictionary<string, int>
                 {
@@ -158,23 +174,41 @@ public class DecisionManager : MonoBehaviour
                 new Choice("Reject it", new Dictionary<string, int>
                 {
                     { "clientTrust", -5 }
+                }),
+                new Choice("Ask to cover your meal bill", new Dictionary<string, int>
+                {
+                    { "clientTrust", -10 }
+                }),
+                new Choice("Offer to cover the meal bill", new Dictionary<string, int>
+                {
+                    { "clientTrust", 10 },
+                    { "playerFinance", -10 }
                 })
             ),
             new DecisionEvent(
-                "Event 11",
+                "Event 8",
                 "Some worker wanted to resign and join other company",
                 new Choice("Go ahead. It's easy to look for replacement", new Dictionary<string, int>
                 {
-                    { "workerAmount", event11num },
+                    { "workerAmount", -15 },
                     { "workerHappiness", -10 }
                 }),
                 new Choice("I wish you all the best", new Dictionary<string, int>
                 {
-                    { "workerAmount", event11num }
+                    { "workerAmount", -15 }
+                }),
+                new Choice("We still need you", new Dictionary<string, int>
+                {
+                    { "workerAmount", -20 }
+                }),
+                new Choice("How about I increase your salary?", new Dictionary<string, int>
+                {
+                    { "workerAmount", -10 },
+                    { "playerFinance", -20 }
                 })
             ),
             new DecisionEvent(
-                "Event 12",
+                "Event 9",
                 "A worker falls ill",
                 new Choice("Give paid leave", new Dictionary<string, int>
                 {
@@ -185,10 +219,19 @@ public class DecisionManager : MonoBehaviour
                 {
                     { "playerFinance", 5 },
                     { "workerHappiness", -10 }
+                }),
+                new Choice("Visit the worker", new Dictionary<string, int>
+                {
+                    { "playerFinance", -5 },
+                    { "workerHappiness", 10 }
+                }),
+                new Choice("Fire him", new Dictionary<string, int>
+                {
+                    { "workerHappiness", -20 }
                 })
             ),
             new DecisionEvent(
-                "Event 13",
+                "Event 10",
                 "We need to look for more workers",
                 new Choice("Search for the best out there", new Dictionary<string, int>
                 {
@@ -199,11 +242,20 @@ public class DecisionManager : MonoBehaviour
                 new Choice("Threaten on firing", new Dictionary<string, int>
                 {
                     { "playerFinance", -10 },
-                    { "workerAmount", event13num }
+                    { "workerAmount", -10 }
+                    // { "workerAmount", event13num }
+                }),
+                new Choice("Ask for worker transfer from another company", new Dictionary<string, int>
+                {
+                    { "workerAmount", 10 }
+                }),
+                new Choice("We have enough workers", new Dictionary<string, int>
+                {
+                    { "playerFinance", 0 }
                 })
             ),
             new DecisionEvent(
-                "Event 14",
+                "Event 11",
                 "While having a meeting, a worker made a system error",
                 new Choice("Demand compensation", new Dictionary<string, int>
                 {
@@ -214,10 +266,19 @@ public class DecisionManager : MonoBehaviour
                 {
                     { "workerHappiness", -30 },
                     { "playerFinance", 15 }
+                }),
+                new Choice("Leave it be", new Dictionary<string, int>
+                {
+                    { "clientTrust", -15 }
+                }),
+                new Choice("Apologize", new Dictionary<string, int>
+                {
+                    { "workerHappiness", 5 },
+                    { "clientTrust", -10 }
                 })
             ),
             new DecisionEvent(
-                "Event 15",
+                "Event 12",
                 "The workers are fighting to show who’s better in leading the team",
                 new Choice("Leave them be", new Dictionary<string, int>
                 {
@@ -226,10 +287,19 @@ public class DecisionManager : MonoBehaviour
                 new Choice("Separate them", new Dictionary<string, int>
                 {
                     { "workerHappiness", 0 }
+                }),
+                new Choice("Join the fight", new Dictionary<string, int>
+                {
+                    { "workerHappiness", -10 }
+                }),
+                new Choice("Fire them", new Dictionary<string, int>
+                {
+                    { "workerHappiness", -15 },
+                    { "workerAmount", -5}
                 })
             ),
             new DecisionEvent(
-                "Event 16",
+                "Event 13",
                 "The stock market price is not with your side today",
                 new Choice("Aww shucks", new Dictionary<string, int>
                 {
@@ -238,10 +308,18 @@ public class DecisionManager : MonoBehaviour
                 new Choice("Secretly cut worker’s salary for the month", new Dictionary<string, int>
                 {
                     { "workerHappiness", -25 }
+                }),
+                new Choice("Cut the worker's salary and lie about the reason", new Dictionary<string, int>
+                {
+                    { "workerHappiness", -40 }
+                }),
+                new Choice("I still believe fortune is still with me", new Dictionary<string, int>
+                {
+                    { "playerFinance", -35 }
                 })
             ),
             new DecisionEvent(
-                "Event 17",
+                "Event 14",
                 "The stock market is with your side today",
                 new Choice("Yippee!", new Dictionary<string, int>
                 {
@@ -250,23 +328,40 @@ public class DecisionManager : MonoBehaviour
                 new Choice("Try other stock", new Dictionary<string, int>
                 {
                     { "playerFinance", -15}
+                }),
+                new Choice("Keep investing with extra", new Dictionary<string, int>
+                {
+                    { "playerFinance", -25 }
+                }),
+                new Choice("ALL IN!!", new Dictionary<string, int>
+                {
+                    { "playerFinance", -100 }
                 })
             ),
             new DecisionEvent(
-                "Event 18",
+                "Event 15",
                 "A client from another company angrily reports inappropriate behavior from one of your workers",
                 new Choice("Discipline the worker", new Dictionary<string, int>
                 {
                     { "clientTrust", -5 },
-                    { "workerHappiness", -10 },
+                    { "workerHappiness", -10 }
                 }),
                 new Choice("Do nothing", new Dictionary<string, int>
                 {
                     { "clientTrust", -30}
+                }),
+                new Choice("Argue with them", new Dictionary<string, int>
+                {
+                    { "clientTrust", -65 },
+                    { "workerHappiness", -10 }
+                }),
+                new Choice("Make a scandal about the client’s behavior", new Dictionary<string, int>
+                {
+                    { "clientTrust", -40 }
                 })
             ),
             new DecisionEvent(
-                "Event 19",
+                "Event 16",
                 "It's your birthday and you want to throw a party at a nearby bar",
                 new Choice("Invite the clients", new Dictionary<string, int>
                 {
@@ -277,10 +372,20 @@ public class DecisionManager : MonoBehaviour
                 {
                     { "clientTrust", 25 },
                     { "workerHappiness", 15 }
+                }),
+                new Choice("Just invite the workers", new Dictionary<string, int>
+                {
+                    { "playerFinance", -15 },
+                    { "workerHappiness", 25 }
+                }),
+                new Choice("Don’t invite anybody", new Dictionary<string, int>
+                {
+                    { "clientTrust", -5 },
+                    { "workerHappiness", -10 }
                 })
             ),
             new DecisionEvent(
-                "Event 20",
+                "Event 17",
                 "All of your worker invite you to a drinking party",
                 new Choice("Accepts it", new Dictionary<string, int>
                 {
@@ -290,10 +395,18 @@ public class DecisionManager : MonoBehaviour
                 new Choice("Politely reject it", new Dictionary<string, int>
                 {
                     { "workerHappiness", -5 }
+                }),
+                new Choice("Make them pay your bill", new Dictionary<string, int>
+                {
+                    { "workerHappiness", -10 }
+                }),
+                new Choice("Prohibit them on drinking", new Dictionary<string, int>
+                {
+                    { "workerHappiness", -20 }
                 })
             ),
             new DecisionEvent(
-                "Event 21",
+                "Event 18",
                 "The AC is leaking",
                 new Choice("Call the repairman", new Dictionary<string, int>
                 {
@@ -302,10 +415,19 @@ public class DecisionManager : MonoBehaviour
                 new Choice("It’ll dry out soon enough", new Dictionary<string, int>
                 {
                     { "workerHappiness", -10 }
+                }),
+                new Choice("Replace it", new Dictionary<string, int>
+                {
+                    { "playerFinance", -15 }
+                }),
+                new Choice("Change it with a standing fan for a while", new Dictionary<string, int>
+                {
+                    { "playerFinance", -10 },
+                    { "workerHappiness", -5}
                 })
             ),
             new DecisionEvent(
-                "Event 22",
+                "Event 19",
                 "The company’s PC is old enough to be replaced",
                 new Choice("Replace all", new Dictionary<string, int>
                 {
@@ -315,10 +437,20 @@ public class DecisionManager : MonoBehaviour
                 new Choice("If it still works, just use it", new Dictionary<string, int>
                 {
                     { "workerHappiness", -10 }
+                }),
+                new Choice("Upgrade it", new Dictionary<string, int>
+                {
+                    { "playerFinance", -30 },
+                    { "workerHappiness", 20 }
+                }),
+                new Choice("Let other company do our work", new Dictionary<string, int>
+                {
+                    { "playerFinance", -50 },
+                    { "clientTrust", -100 }
                 })
             ),
             new DecisionEvent(
-                "Event 23",
+                "Event 20",
                 "The client’s CEO wants to transfer their workers to our company",
                 new Choice("We might need extra hand", new Dictionary<string, int>
                 {
@@ -328,11 +460,19 @@ public class DecisionManager : MonoBehaviour
                 new Choice("We don't have any space for them", new Dictionary<string, int>
                 {
                     { "clientTrust", -5 }
+                }),
+                new Choice("We only have a little space for them", new Dictionary<string, int>
+                {
+                    { "workerAmount", 10 }
+                }),
+                new Choice("We need more", new Dictionary<string, int>
+                {
+                    { "workerAmount", 5 }
                 })
             ),
             new DecisionEvent(
-                "Event 24",
-                "We ran out of papers",
+                "Event 21",
+                "We ran out of paper",
                 new Choice("Buy more", new Dictionary<string, int>
                 {
                     { "playerFinance", -5 }
@@ -340,10 +480,19 @@ public class DecisionManager : MonoBehaviour
                 new Choice("We have technology", new Dictionary<string, int>
                 {
                     { "clientTrust", 0 }
+                }),
+                new Choice("Re-use the old paper", new Dictionary<string, int>
+                {
+                    { "workerHappiness", -5 },
+                    { "clientTrust", -5 }
+                }),
+                new Choice("Buy books", new Dictionary<string, int>
+                {
+                    { "playerFinance", -15 }
                 })
             ),
             new DecisionEvent(
-                "Event 25",
+                "Event 22",
                 "The internet subscription has ended",
                 new Choice("We really need the internet", new Dictionary<string, int>
                 {
@@ -352,10 +501,19 @@ public class DecisionManager : MonoBehaviour
                 new Choice("We can do it without internet", new Dictionary<string, int>
                 {
                     { "workerHappiness", -10 }
+                }),
+                new Choice("Subscribe to the fastest one", new Dictionary<string, int>
+                {
+                    { "playerFinance", -40 }
+                }),
+                new Choice("Change the provider", new Dictionary<string, int>
+                {
+                    { "playerFinance", -15 },
+                    { "workerHappiness", -5 }
                 })
             ),
             new DecisionEvent(
-                "Event 26",
+                "Event 23",
                 "Taxes are rising",
                 new Choice("We have no choice", new Dictionary<string, int>
                 {
@@ -365,19 +523,40 @@ public class DecisionManager : MonoBehaviour
                 {
                     { "workerHappiness", -20 },
                     { "workerAmount", -10 }
+                }),
+                new Choice("Cut worker’s salary", new Dictionary<string, int>
+                {
+                    { "workerHappiness", -50},
+                    { "workerAmount", -15 }
+                }),
+                new Choice("Evade the tax", new Dictionary<string, int>
+                {
+                    { "playerFinance", -100 },
+                    { "workerAmount", -100 }
                 })
             ),
             new DecisionEvent(
-                "Event 27",
+                "Event 24",
                 "Your company is hit by the inflation wave",
                 new Choice("Worker’s fate", new Dictionary<string, int>
                 {
                     { "workerHappiness", -50 },
-                    { "workerAmount", -50}
+                    { "workerAmount", -50 }
                 }),
                 new Choice("Wage concern", new Dictionary<string, int>
                 {
                     { "playerFinance", -50 }
+                }),
+                new Choice("Do nothing", new Dictionary<string, int>
+                {
+                    { "workerHappiness", -25 },
+                    { "workerAmount", -25 },
+                    { "playerFinance", -20 }
+                }),
+                new Choice("Pressure the clients for increased budget", new Dictionary<string, int>
+                {
+                    { "clientTrust", -80 },
+                    { "playerFinance", 15}
                 })
             ),
             new DecisionEvent(
@@ -390,12 +569,23 @@ public class DecisionManager : MonoBehaviour
                 new Choice("Fire the incompetents", new Dictionary<string, int>
                 {
                     { "workerHappiness", -30 }
+                }),
+                new Choice("Let it be", new Dictionary<string, int>
+                {
+                    { "playerFinance", -10 }
+                }),
+                new Choice("Cover the rumors", new Dictionary<string, int>
+                {
+                    { "playerFinance", -10 }
                 })
             )
         };
 
         // Initially hide the event happening object
         eventHappening.SetActive(false);
+
+        // Initialize available events list as a copy of all events
+        availableEvents = new List<DecisionEvent>(events);
 
         ShowNextEvent();
     }
@@ -416,55 +606,55 @@ public class DecisionManager : MonoBehaviour
     public void ShowNextEvent()
     {
         int randomNum = Random.Range(0, 100);
-        if(randomNum >= 81 && randomNum <= 90)
-        {
-            event7num = 15;
-        }
-        else if(randomNum >= 91 && randomNum <= 97)
-        {
-            event7num = 25;
-        }
-        else if(randomNum >= 98 && randomNum <= 100)
-        {
-            event7num = 30;
-        }
-        else
-        {
-            event7num = 0;
-        }
+        // if(randomNum >= 81 && randomNum <= 90)
+        // {
+        //     event7num = 15;
+        // }
+        // else if(randomNum >= 91 && randomNum <= 97)
+        // {
+        //     event7num = 25;
+        // }
+        // else if(randomNum >= 98 && randomNum <= 100)
+        // {
+        //     event7num = 30;
+        // }
+        // else
+        // {
+        //     event7num = 0;
+        // }
 
-        if(randomNum >= 35 && randomNum <= 66)
-        {
-            event11num = -15;
-        }
-        else if(randomNum >= 67 && randomNum <= 100)
-        {
-            event11num = -20;
-        }
-        else
-        {
-            event11num = -10;
-        }
+        // if(randomNum >= 35 && randomNum <= 66)
+        // {
+        //     event11num = -15;
+        // }
+        // else if(randomNum >= 67 && randomNum <= 100)
+        // {
+        //     event11num = -20;
+        // }
+        // else
+        // {
+        //     event11num = -10;
+        // }
 
-        if(randomNum <= 50)
-        {
-            event13num = 25;
-        }
-        else
-        {
-            event13num = 30;
-        }
+        // if(randomNum <= 50)
+        // {
+        //     event13num = 25;
+        // }
+        // else
+        // {
+        //     event13num = 30;
+        // }
 
-        if (events.Count == 0)
+        if (availableEvents.Count == 0)
         {
-            Debug.Log("All events completed!");
-            return;
+            // Repopulate the list if all events have been used
+            availableEvents = new List<DecisionEvent>(events);
         }
 
         // Select a random event
         int randomIndex = Random.Range(0, events.Count);
-        currentEvent = events[randomIndex];
-        events.RemoveAt(randomIndex);
+        currentEvent = availableEvents[randomIndex];
+        // events.RemoveAt(randomIndex);
 
         // Update UI
         eventDescription.text = currentEvent.description;
@@ -476,6 +666,10 @@ public class DecisionManager : MonoBehaviour
         choice1Button.onClick.AddListener(() => OnChoiceSelected(currentEvent.choice1));
         choice2Button.onClick.RemoveAllListeners();
         choice2Button.onClick.AddListener(() => OnChoiceSelected(currentEvent.choice2));
+        choice3Button.onClick.RemoveAllListeners();
+        choice3Button.onClick.AddListener(() => OnChoiceSelected(currentEvent.choice3));
+        choice4Button.onClick.RemoveAllListeners();
+        choice4Button.onClick.AddListener(() => OnChoiceSelected(currentEvent.choice4));
     }
 
     void OnChoiceSelected(Choice choice)

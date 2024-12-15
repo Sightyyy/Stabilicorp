@@ -101,6 +101,7 @@ public class DayAndTimeManager : MonoBehaviour
                 CommandWorkersToComeBack();
                 if(isNewWorker)
                 {
+                    gameData.playerFinance -= 15;
                     gameData.workerAmount += 5;
                     isTired = true;
                 }
@@ -237,6 +238,11 @@ public class DayAndTimeManager : MonoBehaviour
         if(isHiring)
         {
             if(rand == 0)
+            {
+                isNoWorker = true;
+                isHiring = false;
+            }
+            else if(gameData.playerFinance <= 0)
             {
                 isNoWorker = true;
                 isHiring = false;

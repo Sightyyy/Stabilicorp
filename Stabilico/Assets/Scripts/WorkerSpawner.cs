@@ -75,9 +75,9 @@ public class WorkerSpawner : MonoBehaviour
     private void RemoveWorkers(int count)
     {
         // Remove workers from the parent transform
-        for (int i = count; i > 0; i--)
+        for (int i = workerParent.childCount - 1; i >= workerParent.childCount-count; i--)
         {
-            if (workerParent.childCount > 0 && i <= workerParent.childCount)
+            if (workerParent.childCount > 0 && i < workerParent.childCount)
             {
                 Debug.Log("Remove one worker");
                 Debug.Log(workerParent.GetChild(i).gameObject.name);

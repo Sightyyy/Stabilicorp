@@ -9433,6 +9433,8 @@ MonoBehaviour:
   eventDescription: {fileID: 103699288}
   choice1Button: {fileID: 881645484}
   choice2Button: {fileID: 994656247}
+  choice3Button: {fileID: 1935729933}
+  choice4Button: {fileID: 1314064405}
   dayAndTimeManager: {fileID: 1446163130}
   eventHappening: {fileID: 20013858}
   hasProject: 0
