@@ -706,17 +706,14 @@ public class DecisionManager : MonoBehaviour
                     break;
                 case "workerAmount":
                     GameData.instance.workerAmount += change.Value;
-                    EnsureNonNegative(ref GameData.instance.workerAmount);
                     Debug.Log("Workers = " + GameData.instance.workerAmount);
                     break;
                 case "workerHappiness":
                     GameData.instance.workerHappiness += change.Value;
-                    EnsureNonNegative(ref GameData.instance.workerHappiness);
                     Debug.Log("Happiness = " + GameData.instance.workerHappiness);
                     break;
                 case "clientTrust":
                     GameData.instance.clientTrust += change.Value;
-                    EnsureNonNegative(ref GameData.instance.clientTrust);
                     Debug.Log("Trust = " + GameData.instance.clientTrust);
                     break;
                 case "evadeTax":
@@ -732,7 +729,7 @@ public class DecisionManager : MonoBehaviour
         // Log updated stats (optional)
         Debug.Log($"Updated Stats: Finance={GameData.instance.playerFinance}, Workers={GameData.instance.workerAmount}, Happiness={GameData.instance.workerHappiness}, Trust={GameData.instance.clientTrust}");
     }
-    private void EnsureNonNegative(ref int value)
+    public void EnsureNonNegative(ref int value)
     {
         if (value < 0)
         {

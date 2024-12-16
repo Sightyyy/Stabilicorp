@@ -42,6 +42,7 @@ public class DayAndTimeManager : MonoBehaviour
     public bool isNewWorker = false;
     public bool isNoWorker = false;
     public bool isTired = false;
+    public bool isBroke = false;
     private SecretaryInteraction secretaryInteraction;
 
     private void Start()
@@ -117,7 +118,7 @@ public class DayAndTimeManager : MonoBehaviour
                 CommandPlayerAndSecretaryToGoHome();
                 CommandWorkersToGoHome();
             }
-            if (timer == 10f || timer == 30f)
+            if (timer == 15f || timer == 35f)
             {
                 CommandRandomWorkerToDispenser();
             }
@@ -240,12 +241,11 @@ public class DayAndTimeManager : MonoBehaviour
         }
         if(isHiring)
         {
-            if(rand == 0)
+            if(gameData.playerFinance <= 0)
             {
-                isNoWorker = true;
-                isHiring = false;
+                isBroke = true;
             }
-            else if(gameData.playerFinance <= 0)
+            if(rand == 0)
             {
                 isNoWorker = true;
                 isHiring = false;

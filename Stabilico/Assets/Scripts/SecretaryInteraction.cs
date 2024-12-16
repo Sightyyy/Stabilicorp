@@ -1,17 +1,17 @@
 using System.Collections;
 using UnityEngine;
-using TMPro; // For TextMeshProUGUI
-using UnityEngine.UI;
+using TMPro;
+using UnityEditor.Experimental.GraphView;
 
 public class SecretaryInteraction : MonoBehaviour
 {
-    [SerializeField] private Image bubbleChatImage; // UI Image for the bubble chat
-    [SerializeField] private TextMeshProUGUI bubbleChatText; // TextMeshProUGUI for chat text
-    [SerializeField] private GameObject yesNoButtons; // Container for Yes/No buttons
+    [SerializeField] private GameObject bubbleChatObject; // GameObject for the bubble chat
+    [SerializeField] private TextMeshPro bubbleChatText; // TextMeshProUGUI for chat text
 
     private PlayerAndSecretaryBehavior playerAndSecretaryBehavior;
     private DayAndTimeManager dayAndTimeManager;
     private bool isClicked = false;
+    private bool awaitingResponse = false; // To track if the player needs to respond
 
     private void Awake()
     {
@@ -21,91 +21,98 @@ public class SecretaryInteraction : MonoBehaviour
 
     private void Start()
     {
-        // Ensure the bubble chat and buttons are initially hidden
-        bubbleChatImage.gameObject.SetActive(false);
-        yesNoButtons.SetActive(false);
+        // Ensure the bubble chat is initially hidden
+        bubbleChatObject.SetActive(false);
     }
 
     private void Update()
     {
         // Prevent bubble chat from showing while the secretary is moving
-        if (playerAndSecretaryBehavior.isMoving && bubbleChatImage.gameObject.activeSelf)
+        if (playerAndSecretaryBehavior.isMoving && bubbleChatObject.activeSelf)
         {
             HideBubbleChat();
         }
+
+        // Handle key inputs for Yes/No responses
+        if (awaitingResponse)
+        {
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                OnYesPressed();
+            }
+            else if (Input.GetKeyDown(KeyCode.N))
+            {
+                OnNoPressed();
+            }
+        }
     }
 
-    // Triggered when the mouse hovers over the secretary
     private void OnMouseEnter()
     {
-        if(dayAndTimeManager.isTired && !playerAndSecretaryBehavior.isMoving)
+        if (dayAndTimeManager.isBroke)
+        {
+            ShowBubbleChat("We don't have enough money to hire.");
+        }
+        else if (dayAndTimeManager.isTired && !playerAndSecretaryBehavior.isMoving)
         {
             ShowBubbleChat("Wew... I'm tired, maybe tomorrow.");
         }
-
-        if (dayAndTimeManager.isHiring && !playerAndSecretaryBehavior.isMoving)
+        else if (dayAndTimeManager.isHiring && !playerAndSecretaryBehavior.isMoving)
         {
             ShowBubbleChat("Please wait, I am currently hiring.");
         }
-        else if(!dayAndTimeManager.isTired && !playerAndSecretaryBehavior.isMoving)
+        else if (!dayAndTimeManager.isTired && !playerAndSecretaryBehavior.isMoving)
         {
             ShowBubbleChat("Do you need help in anything?");
         }
     }
 
-    // Triggered when the mouse stops hovering over the secretary
     private void OnMouseExit()
     {
-        if(isClicked == false)
+        if (!isClicked)
         {
             HideBubbleChat();
         }
     }
 
-    // Triggered when the secretary is clicked
     public void OnMouseDown()
     {
-        Debug.Log("Talked!");
-        if (playerAndSecretaryBehavior.isMoving || dayAndTimeManager.isHiring || dayAndTimeManager.isTired) return; // Prevent interaction while moving
+        if (playerAndSecretaryBehavior.isMoving || dayAndTimeManager.isHiring || dayAndTimeManager.isTired || dayAndTimeManager.isBroke) return;
 
         isClicked = true;
 
-        ShowBubbleChat("Do you want to hire workers?");
-        yesNoButtons.SetActive(true); // Show Yes/No buttons for interaction
+        ShowBubbleChat("Do you want to hire workers? Press 'Y' for Yes or 'N' for No.");
+        awaitingResponse = true; // Start waiting for player input
     }
 
-    // Called when the "Yes" button is clicked
-    public void OnYesClicked()
+    private void OnYesPressed()
     {
         HideBubbleChat();
-        ShowBubbleChat("Alright hiring in progress!");
+        ShowBubbleChat("Alright, hiring in progress!");
         dayAndTimeManager.isHiring = true;
 
-        // Hide buttons after selection
-        yesNoButtons.SetActive(false);
+        awaitingResponse = false; // End waiting for input
         isClicked = false;
     }
 
-    // Called when the "No" button is clicked
-    public void OnNoClicked()
+    private void OnNoPressed()
     {
         HideBubbleChat();
         ShowBubbleChat("Okay!");
 
-        // Hide buttons after selection
-        yesNoButtons.SetActive(false);
+        awaitingResponse = false; // End waiting for input
+        isClicked = false;
     }
 
     private void ShowBubbleChat(string message)
     {
-        bubbleChatImage.gameObject.SetActive(true);
+        bubbleChatObject.SetActive(true);
         bubbleChatText.text = message;
     }
 
     private void HideBubbleChat()
     {
-        bubbleChatImage.gameObject.SetActive(false);
+        bubbleChatObject.SetActive(false);
         bubbleChatText.text = "";
-        yesNoButtons.SetActive(false);
     }
 }

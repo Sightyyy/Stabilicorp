@@ -2,13 +2,19 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.UI;
+using TMPro;
 
 public class PauseManager : MonoBehaviour
 {
     [SerializeField] private GameObject pausePanel; // The Pause Panel UI
     [SerializeField] private GameObject settingsPanel; // The Settings Panel UI
+    [SerializeField] private GameObject warningPopUp;
+    [SerializeField] private TextMeshProUGUI warningText;
+    [SerializeField] private Button yesButton;
+    [SerializeField] private Button noButton;
     public Image transitionImage;  // Ensure this is assigned in the editor
-    public float transitionTime = 1.0f;
+    private float transitionTime = 1.0f;
+    private int warningStage = 0; // Tracks the stage of the warnings
 
     private AudioCollection audioCollection;
     private GameData gameData;
@@ -65,11 +71,85 @@ public class PauseManager : MonoBehaviour
 
     public void QuitToMainMenu()
     {
-        gameData.SaveData();
-        Time.timeScale = 1f; // Reset time scale to normal before quitting
-        audioCollection.PlaySFX(audioCollection.UIButtonClick);
-        StartCoroutine(TransitionToScene("Main Menu"));
+        // Reset to the first stage
+        warningStage = 0;
+
+        // Show the initial warning popup
+        warningPopUp.SetActive(true);
+        warningText.text = "Do you want to quit the game?";
+
+        // Enable buttons and assign listeners
+        EnableButtons();
+        yesButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(HandleYesClick);
+        noButton.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(HandleNoClick);
     }
+
+    private void ResetButtons()
+    {
+        // Temporarily disable buttons to prevent multiple clicks
+        DisableButtons();
+        Invoke(nameof(EnableButtons), 0.2f); // Re-enable after a short delay
+    }
+
+    private void EnableButtons()
+    {
+        yesButton.GetComponent<UnityEngine.UI.Button>().interactable = true;
+        noButton.GetComponent<UnityEngine.UI.Button>().interactable = true;
+    }
+
+    private void DisableButtons()
+    {
+        yesButton.GetComponent<UnityEngine.UI.Button>().interactable = false;
+        noButton.GetComponent<UnityEngine.UI.Button>().interactable = false;
+    }
+
+    private void Cleanup()
+    {
+        // Remove listeners and hide the popup
+        yesButton.GetComponent<UnityEngine.UI.Button>().onClick.RemoveListener(HandleYesClick);
+        noButton.GetComponent<UnityEngine.UI.Button>().onClick.RemoveListener(HandleNoClick);
+        warningPopUp.SetActive(false);
+    }
+
+    private void HandleYesClick()
+    {
+        audioCollection.PlaySFX(audioCollection.UIButtonClick);
+
+        if (warningStage == 0)
+        {
+            // Player confirmed they want to quit
+            warningStage++;
+            warningText.text = "Do you want to reset the game?";
+            ResetButtons(); // Enable buttons for the next stage
+        }
+        else if (warningStage == 1)
+        {
+            // Player confirmed they want to reset
+            gameData.ResetData();
+            StartCoroutine(TransitionToScene("Main Menu"));
+            Cleanup(); // Cleanup listeners and popup
+        }
+    }
+
+    private void HandleNoClick()
+    {
+        audioCollection.PlaySFX(audioCollection.UIButtonClick);
+
+        if (warningStage == 0)
+        {
+            // Player canceled quitting
+            Cleanup();
+        }
+        else if (warningStage == 1)
+        {
+            // Player canceled resetting
+            gameData.SaveData();
+            Time.timeScale = 1f; // Reset time scale
+            StartCoroutine(TransitionToScene("Main Menu"));
+            Cleanup(); // Cleanup listeners and popup
+        }
+    }
+
     private IEnumerator TransitionToScene(string sceneName)
     {
         // Fade to black
