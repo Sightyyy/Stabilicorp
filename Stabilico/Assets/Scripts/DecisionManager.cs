@@ -7,6 +7,7 @@ public class DecisionManager : MonoBehaviour
     public List<DecisionEvent> events; // All events (persistent list)
     private List<DecisionEvent> availableEvents; // Track available events
     private DecisionEvent currentEvent;
+    private ContinueOrDefeat continueOrDefeat;
 
     public TextMeshProUGUI eventDescription; // UI text to show event description
     public UnityEngine.UI.Button choice1Button; // Button for choice 1
@@ -28,6 +29,7 @@ public class DecisionManager : MonoBehaviour
     {
         audioCollection = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioCollection>();
         secretaryInteraction = FindObjectOfType<SecretaryInteraction>();
+        continueOrDefeat = FindAnyObjectByType<ContinueOrDefeat>();
     }
     void Start()
     {
@@ -225,7 +227,8 @@ public class DecisionManager : MonoBehaviour
                 }),
                 new Choice("Fire him", new Dictionary<string, int>
                 {
-                    { "workerHappiness", -25 }
+                    { "workerHappiness", -25 },
+                    { "workerAmount", -5 }
                 })
             ),
             new DecisionEvent(
@@ -258,12 +261,12 @@ public class DecisionManager : MonoBehaviour
                 new Choice("Demand compensation", new Dictionary<string, int>
                 {
                     { "workerHappiness", -10 },
-                    { "playerFinance", 5 }
+                    { "playerFinance", 25 }
                 }),
                 new Choice("Fire Him", new Dictionary<string, int>
                 {
                     { "workerHappiness", -30 },
-                    { "playerFinance", 15 }
+                    { "workerAmount", -5 }
                 }),
                 new Choice("Leave it be", new Dictionary<string, int>
                 {
@@ -534,7 +537,8 @@ public class DecisionManager : MonoBehaviour
                 new Choice("Evade the tax", new Dictionary<string, int>
                 {
                     { "playerFinance", -100 },
-                    { "workerAmount", -100 }
+                    { "workerAmount", -100 },
+                    { "evadeTax", 1}
                 })
             ),
             new DecisionEvent(
@@ -571,7 +575,7 @@ public class DecisionManager : MonoBehaviour
                 new Choice("Fire the incompetents", new Dictionary<string, int>
                 {
                     { "workerHappiness", -30 },
-                    { "workerAmmount", -15}
+                    { "workerAmount", -15}
                 }),
                 new Choice("Let it be", new Dictionary<string, int>
                 {
@@ -714,6 +718,10 @@ public class DecisionManager : MonoBehaviour
                     GameData.instance.clientTrust += change.Value;
                     EnsureNonNegative(ref GameData.instance.clientTrust);
                     Debug.Log("Trust = " + GameData.instance.clientTrust);
+                    break;
+                case "evadeTax":
+                    GameData.instance.evadeTax += change.Value;
+                    Debug.Log("TAX EVASION ALERT!!");
                     break;
                 default:
                     Debug.LogWarning($"Unknown stat: {change.Key}");

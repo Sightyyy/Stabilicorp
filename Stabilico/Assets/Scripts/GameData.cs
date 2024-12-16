@@ -13,6 +13,7 @@ public class GameData : MonoBehaviour
     public int workerAmount;
     public int workerHappiness;
     public int clientTrust;
+    public int evadeTax;
 
     // New variables for date and time
     public int currentDay;       // Indeks hari (0 = Senin, dst.)
@@ -27,6 +28,7 @@ public class GameData : MonoBehaviour
         workerAmount = 20;
         workerHappiness = 50;
         clientTrust = 50;
+        evadeTax = 0;
         currentDay = 0;      // Default to Monday
         currentMonth = 0;    // Default to January
         currentDate = 1;          // Default to the 1st
@@ -102,6 +104,7 @@ public class GameData : MonoBehaviour
         workerAmount = 20;
         workerHappiness = 50;
         clientTrust = 50;
+        evadeTax = 0;
 
         // Reset new data
         currentDay = 0;

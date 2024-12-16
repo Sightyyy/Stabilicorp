@@ -8,6 +8,7 @@ using System.Linq;
 public class DayAndTimeManager : MonoBehaviour
 {
     private GameData gameData;
+    private ContinueOrDefeat continueOrDefeat;
 
     public TextMeshProUGUI dayText;
     public TextMeshProUGUI monthText;
@@ -46,6 +47,7 @@ public class DayAndTimeManager : MonoBehaviour
     private void Start()
     {
         secretaryInteraction = FindObjectOfType<SecretaryInteraction>();
+        continueOrDefeat = FindObjectOfType<ContinueOrDefeat>();
         gameData = GameData.instance;
         LoadTimeFromGameData();
         dayText.text = daysOfWeek[dayIndex];
@@ -204,6 +206,7 @@ public class DayAndTimeManager : MonoBehaviour
         if (projectSlider.value >= projectSlider.maxValue)
         {
             Debug.Log("Project selesai!");
+            gameData.playerFinance += 60;
             decisionManager.hasProject--; // Mengurangi jumlah project yang sedang dikerjakan
             if (decisionManager.hasProject <= 0)
             {
@@ -253,18 +256,36 @@ public class DayAndTimeManager : MonoBehaviour
                 isHiring = false;
             }
         }
-        if(isDeficient)
+        // if(isDeficient)
+        // {
+        //     gameData.workerAmount -= 5;
+        // }
+        // if(isVeryDeficient)
+        // {
+        //     gameData.workerAmount -= 10;
+        // }
+        // if(isUnhappy)
+        // {
+        //     gameData.workerHappiness -= 5;
+        // }
+
+        if (gameData.playerFinance <= 0 && gameData.workerAmount <= 0)
+        {
+            continueOrDefeat.TriggerLose();
+        }
+        if (gameData.playerFinance <= 0)
+        {
+            gameData.workerAmount -= 5;
+            if (gameData.workerHappiness > 0)
+            {
+                gameData.workerHappiness -= 5;
+            }
+        }
+        else if (gameData.workerHappiness <= 0)
         {
             gameData.workerAmount -= 5;
         }
-        if(isVeryDeficient)
-        {
-            gameData.workerAmount -= 10;
-        }
-        if(isUnhappy)
-        {
-            gameData.workerHappiness -= 10;
-        }
+        
         dayIndex = (dayIndex + 1) % daysOfWeek.Length;
         dayText.text = daysOfWeek[dayIndex];
         IncrementDate();

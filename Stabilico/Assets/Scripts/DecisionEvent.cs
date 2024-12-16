@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,4 +32,5 @@ public class Choice
         this.choiceText = choiceText;
         this.statChanges = statChanges;
     }
+
 }
