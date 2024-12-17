@@ -88,7 +88,7 @@ public class PauseManager : MonoBehaviour
     {
         // Temporarily disable buttons to prevent multiple clicks
         DisableButtons();
-        Invoke(nameof(EnableButtons), 0.2f); // Re-enable after a short delay
+        StartCoroutine(EnableButtonsWithDelay(0.2f));
     }
 
     private void EnableButtons()
@@ -150,6 +150,11 @@ public class PauseManager : MonoBehaviour
         }
     }
 
+    private IEnumerator EnableButtonsWithDelay(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay); // Tidak terpengaruh Time.timeScale
+        EnableButtons();
+    }
     private IEnumerator TransitionToScene(string sceneName)
     {
         // Fade to black

@@ -20,9 +20,6 @@ public class DisplayValue : MonoBehaviour
 
     void Update()
     {
-        decisionManager.EnsureNonNegative(ref GameData.instance.playerFinance);
-        decisionManager.EnsureNonNegative(ref GameData.instance.workerAmount);
-        decisionManager.EnsureNonNegative(ref GameData.instance.workerHappiness);
         // Memperbarui nilai setiap kali frame
         if (gameData != null)
         {

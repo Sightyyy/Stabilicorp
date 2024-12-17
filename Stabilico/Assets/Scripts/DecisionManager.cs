@@ -702,18 +702,25 @@ public class DecisionManager : MonoBehaviour
             {
                 case "playerFinance":
                     GameData.instance.playerFinance += change.Value;
+                    EnsureNoOver100(ref GameData.instance.playerFinance);
                     Debug.Log("Finance = " + GameData.instance.playerFinance);
                     break;
                 case "workerAmount":
                     GameData.instance.workerAmount += change.Value;
+                    EnsureNonNegative(ref GameData.instance.workerAmount);
+                    EnsureNoOver100(ref GameData.instance.workerAmount);
                     Debug.Log("Workers = " + GameData.instance.workerAmount);
                     break;
                 case "workerHappiness":
                     GameData.instance.workerHappiness += change.Value;
+                    EnsureNonNegative(ref GameData.instance.workerHappiness);
+                    EnsureNoOver100(ref GameData.instance.workerHappiness);
                     Debug.Log("Happiness = " + GameData.instance.workerHappiness);
                     break;
                 case "clientTrust":
                     GameData.instance.clientTrust += change.Value;
+                    EnsureNonNegative(ref GameData.instance.clientTrust);
+                    EnsureNoOver100(ref GameData.instance.clientTrust);
                     Debug.Log("Trust = " + GameData.instance.clientTrust);
                     break;
                 case "evadeTax":
@@ -735,6 +742,10 @@ public class DecisionManager : MonoBehaviour
         {
             value = 0;
         }
+    }
+
+    public void EnsureNoOver100(ref int value)
+    {
         if (value > 100)
         {
             value = 100;

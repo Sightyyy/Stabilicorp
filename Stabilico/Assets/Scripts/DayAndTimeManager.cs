@@ -281,9 +281,22 @@ public class DayAndTimeManager : MonoBehaviour
                 gameData.workerHappiness -= 5;
             }
         }
+        
+        if(gameData.playerFinance <= 0 && gameData.workerHappiness <= 0)
+        {
+            gameData.workerAmount -= 10;
+        }
         else if (gameData.workerHappiness <= 0)
         {
             gameData.workerAmount -= 5;
+        }
+        else if (gameData.playerFinance <= 0)
+        {
+            gameData.workerAmount -= 5;
+            if (gameData.workerHappiness > 0)
+            {
+                gameData.workerHappiness -= 5;
+            }
         }
         
         dayIndex = (dayIndex + 1) % daysOfWeek.Length;
