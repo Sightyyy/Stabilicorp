@@ -126,10 +126,19 @@ public class PauseManager : MonoBehaviour
         {
             // Player confirmed they want to reset
             gameData.ResetData();
+
+            // Hide the pause menu and resume time immediately
+            pausePanel.SetActive(false);
+            Time.timeScale = 1f;
+
+            // Start the transition to the main menu
             StartCoroutine(TransitionToScene("Main Menu"));
-            Cleanup(); // Cleanup listeners and popup
+
+            // Cleanup listeners and popup
+            Cleanup();
         }
     }
+
 
     private void HandleNoClick()
     {

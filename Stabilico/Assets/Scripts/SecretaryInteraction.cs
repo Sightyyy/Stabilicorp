@@ -49,27 +49,30 @@ public class SecretaryInteraction : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (dayAndTimeManager.isBroke)
+        if(!isClicked && !awaitingResponse)
         {
-            ShowBubbleChat("We don't have enough money to hire.");
-        }
-        else if (dayAndTimeManager.isTired && !playerAndSecretaryBehavior.isMoving)
-        {
-            ShowBubbleChat("Wew... I'm tired, maybe tomorrow.");
-        }
-        else if (dayAndTimeManager.isHiring && !playerAndSecretaryBehavior.isMoving)
-        {
-            ShowBubbleChat("Please wait, I am currently hiring.");
-        }
-        else if (!dayAndTimeManager.isTired && !playerAndSecretaryBehavior.isMoving)
-        {
-            ShowBubbleChat("Do you need help in anything?");
+            if (dayAndTimeManager.isBroke)
+            {
+                ShowBubbleChat("We don't have enough money to hire.");
+            }
+            else if (dayAndTimeManager.isTired && !playerAndSecretaryBehavior.isMoving)
+            {
+                ShowBubbleChat("Wew... I'm tired, maybe tomorrow.");
+            }
+            else if (dayAndTimeManager.isHiring && !playerAndSecretaryBehavior.isMoving)
+            {
+                ShowBubbleChat("Please wait, I am currently hiring.");
+            }
+            else if (!dayAndTimeManager.isTired && !playerAndSecretaryBehavior.isMoving)
+            {
+                ShowBubbleChat("Do you need help in anything?");
+            }
         }
     }
 
-    private void OnMouseExit()
+    public void OnMouseExit()
     {
-        if (!isClicked)
+        if (!isClicked && !awaitingResponse)
         {
             HideBubbleChat();
         }
@@ -87,7 +90,7 @@ public class SecretaryInteraction : MonoBehaviour
 
     private void OnYesPressed()
     {
-        HideBubbleChat();
+        HideBubbleChat(); // Ensure the bubble chat closes immediately
         ShowBubbleChat("Alright, hiring in progress!");
         dayAndTimeManager.isHiring = true;
 
@@ -97,12 +100,13 @@ public class SecretaryInteraction : MonoBehaviour
 
     private void OnNoPressed()
     {
-        HideBubbleChat();
+        HideBubbleChat(); // Ensure the bubble chat closes immediately
         ShowBubbleChat("Okay!");
 
         awaitingResponse = false; // End waiting for input
         isClicked = false;
     }
+
 
     private void ShowBubbleChat(string message)
     {
@@ -114,5 +118,8 @@ public class SecretaryInteraction : MonoBehaviour
     {
         bubbleChatObject.SetActive(false);
         bubbleChatText.text = "";
+        awaitingResponse = false; // Reset waiting for input
+        isClicked = false; // Reset click state
     }
+
 }
