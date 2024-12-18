@@ -234,11 +234,10 @@ public class DayAndTimeManager : MonoBehaviour
 
     private void IncrementDay()
     {
-        // Reset the tired state at the start of a new day
-        if (isTired)
-        {
-            isTired = false;
-        }
+        // Reset tired state and hiring flags
+        isTired = false;
+        isNewWorker = false;
+        isNoWorker = false;
 
         // Handle hiring logic
         int rand = Random.Range(0, 2);
@@ -251,21 +250,22 @@ public class DayAndTimeManager : MonoBehaviour
 
             if (rand == 0)
             {
-                isNoWorker = true; // No new workers hired
+                isNoWorker = true;
             }
             else
             {
-                isNewWorker = true; // New workers successfully hired
+                isNewWorker = true;
             }
 
-            isHiring = false; // Hiring process is completed
+            isHiring = false;
         }
 
-        // Adjust worker conditions based on finance and happiness
+        // Adjust worker conditions
         if (gameData.playerFinance <= 0 && gameData.workerAmount <= 0)
         {
             continueOrDefeat.TriggerLose();
         }
+
         if (gameData.playerFinance <= 0)
         {
             gameData.workerAmount -= 5;
@@ -274,6 +274,7 @@ public class DayAndTimeManager : MonoBehaviour
                 gameData.workerHappiness -= 5;
             }
         }
+
         if (gameData.playerFinance <= 0 && gameData.workerHappiness <= 0)
         {
             gameData.workerAmount -= 10;
@@ -283,13 +284,14 @@ public class DayAndTimeManager : MonoBehaviour
             gameData.workerAmount -= 5;
         }
 
-        // Increment day and update UI
+        // Update day and date
         dayIndex = (dayIndex + 1) % daysOfWeek.Length;
         dayText.text = daysOfWeek[dayIndex];
         IncrementDate();
 
         SaveTimeToGameData();
     }
+
 
 
     private void IncrementDate()
