@@ -234,41 +234,34 @@ public class DayAndTimeManager : MonoBehaviour
 
     private void IncrementDay()
     {
-        int rand = Random.Range(0, 2);
-        if(isTired)
+        // Reset the tired state at the start of a new day
+        if (isTired)
         {
             isTired = false;
         }
-        if(isHiring)
+
+        // Handle hiring logic
+        int rand = Random.Range(0, 2);
+        if (isHiring)
         {
-            if(gameData.playerFinance <= 0)
+            if (gameData.playerFinance <= 0)
             {
                 isBroke = true;
             }
-            if(rand == 0)
+
+            if (rand == 0)
             {
-                isNoWorker = true;
-                isHiring = false;
+                isNoWorker = true; // No new workers hired
             }
             else
             {
-                isNewWorker = true;
-                isHiring = false;
+                isNewWorker = true; // New workers successfully hired
             }
-        }
-        // if(isDeficient)
-        // {
-        //     gameData.workerAmount -= 5;
-        // }
-        // if(isVeryDeficient)
-        // {
-        //     gameData.workerAmount -= 10;
-        // }
-        // if(isUnhappy)
-        // {
-        //     gameData.workerHappiness -= 5;
-        // }
 
+            isHiring = false; // Hiring process is completed
+        }
+
+        // Adjust worker conditions based on finance and happiness
         if (gameData.playerFinance <= 0 && gameData.workerAmount <= 0)
         {
             continueOrDefeat.TriggerLose();
@@ -281,8 +274,7 @@ public class DayAndTimeManager : MonoBehaviour
                 gameData.workerHappiness -= 5;
             }
         }
-        
-        if(gameData.playerFinance <= 0 && gameData.workerHappiness <= 0)
+        if (gameData.playerFinance <= 0 && gameData.workerHappiness <= 0)
         {
             gameData.workerAmount -= 10;
         }
@@ -290,21 +282,15 @@ public class DayAndTimeManager : MonoBehaviour
         {
             gameData.workerAmount -= 5;
         }
-        else if (gameData.playerFinance <= 0)
-        {
-            gameData.workerAmount -= 5;
-            if (gameData.workerHappiness > 0)
-            {
-                gameData.workerHappiness -= 5;
-            }
-        }
-        
+
+        // Increment day and update UI
         dayIndex = (dayIndex + 1) % daysOfWeek.Length;
         dayText.text = daysOfWeek[dayIndex];
         IncrementDate();
 
         SaveTimeToGameData();
     }
+
 
     private void IncrementDate()
     {

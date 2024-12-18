@@ -49,7 +49,7 @@ public class SecretaryInteraction : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if(!isClicked && !awaitingResponse)
+        if (!isClicked && !awaitingResponse)
         {
             if (dayAndTimeManager.isBroke)
             {
@@ -57,7 +57,7 @@ public class SecretaryInteraction : MonoBehaviour
             }
             else if (dayAndTimeManager.isTired && !playerAndSecretaryBehavior.isMoving)
             {
-                ShowBubbleChat("Wew... I'm tired, maybe tomorrow.");
+                ShowBubbleChat("Whew... I'm tired, maybe tomorrow.");
             }
             else if (dayAndTimeManager.isHiring && !playerAndSecretaryBehavior.isMoving)
             {
@@ -65,7 +65,7 @@ public class SecretaryInteraction : MonoBehaviour
             }
             else if (!dayAndTimeManager.isTired && !playerAndSecretaryBehavior.isMoving)
             {
-                ShowBubbleChat("Do you need help in anything?");
+                ShowBubbleChat("Do you need help with anything?");
             }
         }
     }
