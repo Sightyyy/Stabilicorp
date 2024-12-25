@@ -22,7 +22,6 @@ public class DayAndTimeManager : MonoBehaviour
     public List<GameObject> activeWorkers;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject secretary;
-    private Vector3 dispenserPosition = new Vector3(26, 0, 0);
 
     private string[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
     private string[] monthsOfYear = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
@@ -144,21 +143,21 @@ public class DayAndTimeManager : MonoBehaviour
 
     private void CommandPlayerAndSecretaryToGoHome()
     {
-        player.GetComponent<PlayerAndSecretaryBehavior>().GoHome(0f); // Player goes home immediately
-        secretary.GetComponent<PlayerAndSecretaryBehavior>().GoHome(0.5f); // Secretary goes home with a delay
+        player.GetComponent<PlayerAndSecretaryBehavior>().WalkToHome(); // Player goes home immediately
+        secretary.GetComponent<PlayerAndSecretaryBehavior>().WalkToHome(); // Secretary goes home with a delay
     }
 
     private void CommandPlayerAndSecretaryToComeBack()
     {
-        player.GetComponent<PlayerAndSecretaryBehavior>().ComeBackToWork(0f); // Player returns immediately
-        secretary.GetComponent<PlayerAndSecretaryBehavior>().ComeBackToWork(0.5f); // Secretary returns with a delay
+        player.GetComponent<PlayerAndSecretaryBehavior>().WalkToWork(); // Player returns immediately
+        secretary.GetComponent<PlayerAndSecretaryBehavior>().WalkToWork(); // Secretary returns with a delay
     }
 
     private void CommandWorkersToGoHome()
     {
         for(int i = 0; i < activeWorkers.Count; i++)
         {
-            activeWorkers[i].GetComponent<WorkerBehavior>().GoHome(i * 0.5f);
+            activeWorkers[i].GetComponent<WorkerMovement>().WalkToHome();
         }
     }
 
@@ -166,7 +165,7 @@ public class DayAndTimeManager : MonoBehaviour
     {
         for (int i = 0; i < activeWorkers.Count; i++)
         {
-            activeWorkers[i].GetComponent<WorkerBehavior>().ComeBackToWork(i * 0.5f); // Add 0.5s delay for spacing
+            activeWorkers[i].GetComponent<WorkerMovement>().WalkToWork(); // Add 0.5s delay for spacing
         }
     }
     private void CommandRandomWorkerToDispenser()
@@ -177,7 +176,7 @@ public class DayAndTimeManager : MonoBehaviour
         GameObject randomWorker = activeWorkers[Random.Range(0, activeWorkers.Count)];
 
         // Trigger the movement
-        randomWorker.GetComponent<WorkerBehavior>().MoveToDispenser(dispenserPosition);
+        randomWorker.GetComponent<WorkerMovement>().WalkToDispenser();
     }
 
     private void FillProjectProgressBar()

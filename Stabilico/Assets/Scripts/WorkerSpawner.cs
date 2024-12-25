@@ -64,7 +64,6 @@ public class WorkerSpawner : MonoBehaviour
 
             // Instantiate the worker at the calculated position
             GameObject clone = Instantiate(workerPrefab, spawnPosition, Quaternion.identity, workerParent);
-            clone.GetComponent<WorkerBehavior>().row = row;
             dayAndTimeManager.activeWorkers.Add(clone);
         }
 

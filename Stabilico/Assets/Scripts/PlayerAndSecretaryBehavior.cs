@@ -1,87 +1,57 @@
 using System.Collections;
-using JetBrains.Annotations;
 using UnityEngine;
+using Pathfinding;
 
 public class PlayerAndSecretaryBehavior : MonoBehaviour
 {
-    private float moveSpeed = 2f;
-    private Vector3 targetPosition;
-    private Vector3 workPosition;
-    private Vector3 homePosition;
-    private Vector3 intermediatePosition;
+    private AIPath path;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float stopDistanceThreshold;
+    private Transform ceoHomeTarget;
+    private Vector3 ceoInitialPosition;
+    private float distanceToTarget;
+    private Transform currentTarget;
+    private AudioCollection audioCollection;
     public bool isMoving = false;
 
     private void Start()
     {
-        // Set the current position as the work position
-        workPosition = transform.position;
-
-        // Set home position for player or secretary
-        if (gameObject.name.Contains("Player"))
-        {
-            homePosition = new Vector3(-10, -1.5f, 0); // Player's home position
-        }
-        else if (gameObject.name.Contains("Secretary"))
-        {
-            homePosition = new Vector3(-10, -1.5f, 0); // Secretary's home position
-        }
-
-        // Intermediate position for smooth movement transitions
-        intermediatePosition = new Vector3(homePosition.x - 2f, homePosition.y, homePosition.z);
-
-        // Set the initial target position
-        targetPosition = transform.position;
+        path = GetComponent<AIPath>();
+        ceoInitialPosition = transform.position; // Assuming initial position is the starting position
+        ceoHomeTarget = GameObject.Find("CEOSHome").transform; // Add a GameObject in the scene for "CEOSHome"
     }
 
     private void Update()
     {
-        // Move toward the target position
-        if (Vector3.Distance(transform.position, targetPosition) > 0.1f)
+        path.maxSpeed = moveSpeed;
+
+        // Check distance to the current target
+        if (currentTarget != null)
         {
-            Debug.Log(isMoving);
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            distanceToTarget = Vector2.Distance(transform.position, currentTarget.position);
+            if (distanceToTarget < stopDistanceThreshold)
+            {
+                isMoving = false;
+                path.destination = transform.position; // Stop moving when close enough
+            }
+            else
+            {
+                path.destination = currentTarget.position; // Move to the target
+            }
         }
     }
 
-    public void GoHome(float delay)
+    // Public methods to set destinations
+    public void WalkToHome()
     {
         isMoving = true;
-        StartCoroutine(WalkToHome(delay));
+        currentTarget = ceoHomeTarget;
     }
 
-    private IEnumerator WalkToHome(float delay)
-    {
-        yield return new WaitForSeconds(delay); // Add a delay before moving
-
-        // Step 1: Move to intermediate position
-        targetPosition = intermediatePosition;
-        yield return new WaitUntil(() => Vector3.Distance(transform.position, targetPosition) < 0.1f);
-
-        // Step 2: Move to home position
-        targetPosition = homePosition;
-
-        yield return new WaitForSeconds(1f);
-        isMoving = false;
-    }
-
-    public void ComeBackToWork(float delay)
+    public void WalkToWork()
     {
         isMoving = true;
-        StartCoroutine(WalkToWork(delay));
-    }
-
-    private IEnumerator WalkToWork(float delay)
-    {
-        yield return new WaitForSeconds(delay); // Add a delay before moving
-
-        // Step 1: Move to intermediate position
-        targetPosition = intermediatePosition;
-        yield return new WaitUntil(() => Vector3.Distance(transform.position, targetPosition) < 0.1f);
-
-        // Step 2: Move to work position
-        targetPosition = workPosition;
-
-        yield return new WaitForSeconds(5f);
-        isMoving = false;
+        path.destination = ceoInitialPosition; // Use workerInitialPosition as the destination
+        currentTarget = null; // Clear currentTarget to stop movement
     }
 }
